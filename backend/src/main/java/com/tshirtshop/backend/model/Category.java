@@ -32,6 +32,12 @@ public class Category {
     this.name = name;
     this.imageUrl = imageUrl;
   }
+  public Category(Long id, String name, String imageUrl,List<Product> products) {
+    this.id = id;
+    this.name = name;
+    this.imageUrl = imageUrl;
+    this.products = products;
+  }
 
 
   // Getters et Setters Permettent à Spring (et toi) de lire et modifier les données
