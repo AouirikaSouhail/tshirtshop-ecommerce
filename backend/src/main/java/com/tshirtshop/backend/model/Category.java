@@ -4,6 +4,7 @@ package com.tshirtshop.backend.model;
 import jakarta.persistence.*;
 import com.tshirtshop.backend.model.Product;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 // Cette classe est une entité → elle sera automatiquement convertie en table category dans MySQL
 
@@ -23,6 +24,7 @@ public class Category {
     //Cette ligne établit une relation entre une catégorie et plusieurs produits.
     // mappedBy = "category" fait référence à l'attribut  'category' dans la classe Product.
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore // ⛔ On ignore cette propriété pendant la transformation en JSON
     private List<Product> products;
 
    // Constructeur

@@ -13,7 +13,7 @@ public class Product {
 
     @Id    // Déclare l'attribut comme clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incrémentation
-    private long id;
+    private Long id;
 
     private String name; //Nom du produit
     private String brand; //Marque du produit
@@ -30,7 +30,7 @@ public class Product {
     public Product() {}
 
     //Constructeur avec paramètres
-    public Product(long id, String name, String brand, double price, String imageUrl, Category category) {
+    public Product(Long id, String name, String brand, double price, String imageUrl, Category category) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -40,8 +40,8 @@ public class Product {
 
     }
     // Getters et setters (Spring en a besoin pour manipuler les données)
-    public long getId() {return id;}
-    public void setId(long id) {this.id = id;}
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
     public String getBrand() {return brand;}

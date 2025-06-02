@@ -1,6 +1,9 @@
 package com.tshirtshop.backend;
 
 import com.tshirtshop.backend.model.Category;
+import com.tshirtshop.backend.model.Product;
+import com.tshirtshop.backend.repository.ProductRepository;
+import java.util.List;
 import com.tshirtshop.backend.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,16 +16,25 @@ public class BackendApplication {
 	@Bean // Dit à Spring : “Je veux que ce code soit exécuté automatiquement au démarrage.”
 	//C’est une fonction spéciale qui s’exécute juste après que l’application se lance.
 	// Spring va te fournir automatiquement l’accès à la base de données des catégories.
-	CommandLineRunner innitDatabase(CategoryRepository categoryRepository) {
+	CommandLineRunner innitDatabase(CategoryRepository categoryRepository, ProductRepository productRepository) {
 		//C’est une façon de dire :
 		//“Quand tu démarres l’appli, exécute ce qui est entre { ... }”.
 		return args -> {
 
-			if(categoryRepository.count() == 0) {
+			if(categoryRepository.count() == 0 && productRepository.count() == 0) {
 			//C’est une insertion en base de données.
-			categoryRepository.save(new Category(null, "T-Shirts", "tshirt.jpg"));
-			categoryRepository.save(new Category(null, "Sweats", "sweat.jpg"));
-			categoryRepository.save(new Category(null, "Casquettes", "casquette.jpg"));
+				Category tshirtCat = new Category(null, "T-Shirts", "tshirt.jpg",null);
+				Category sweatCat = new Category(null, "Sweats", "sweat.jpg",null);
+				Category casquetteCat = new Category(null, "Casquettes", "casquette.jpg",null);
+
+				categoryRepository.save(tshirtCat);
+				categoryRepository.save(sweatCat);
+				categoryRepository.save(casquetteCat);
+
+				// ⚠️ Important : les produits ont besoin d'une catégorie déjà enregistrée.
+				productRepository.save(new Product(null, "T-Shirt rouge", "Nike", 19.99, "tshirt-rouge.jpg", tshirtCat));
+				productRepository.save(new Product(null, "Sweat capuche", "Adidas", 39.99, "sweat.jpg", sweatCat));
+				productRepository.save(new Product(null, "Casquette noire", "Puma", 14.99, "casquette.jpg", casquetteCat));
 			}
 			};
 	}
