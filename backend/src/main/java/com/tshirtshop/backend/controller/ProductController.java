@@ -7,6 +7,7 @@ import com.tshirtshop.backend.model.Category;
 import com.tshirtshop.backend.repository.ProductRepository;
 import com.tshirtshop.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,20 @@ public class ProductController {
             // Si la catégorie n’existe pas (id incorrect), on renvoie une liste vide
             return List.of();
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findById(@PathVariable Long id){
+       Optional<Product> optionalProduct = productRepository.findById(id);
+       if(optionalProduct.isPresent()){
+             Product product = optionalProduct.get();
+           // Si le produit existe → on le renvoie avec un code 200 OK
+           return ResponseEntity.ok(product);
+       }
+       else{
+           // Sinon → on renvoie une erreur 404 Not Found
+           return ResponseEntity.notFound().build();
+       }
     }
 
 }
