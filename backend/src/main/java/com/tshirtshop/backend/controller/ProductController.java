@@ -17,6 +17,7 @@ import java.util.Optional;
 
 // // Toutes les routes dans ce fichier commenceront par /products dans l’URL
 @RequestMapping("/products")
+@CrossOrigin(origins = "http://localhost:4200") // ⬅️ Autorise Angular à accéder au backend
 public class ProductController {
 
     @Autowired // Permet au controller un accès a la BDD

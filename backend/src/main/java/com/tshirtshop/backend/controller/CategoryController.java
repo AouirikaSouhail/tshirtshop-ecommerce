@@ -22,7 +22,7 @@ import java.util.List;
 
 // On dit : "Toutes les routes dans ce fichier commenceront par /categories."
 @RequestMapping("/categories")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200") // ⬅️ Autorise Angular à accéder au backend
 public class CategoryController {
     //On dit à Spring Boot :
     //“Je veux utiliser le repository pour aller lire dans la base de données.”

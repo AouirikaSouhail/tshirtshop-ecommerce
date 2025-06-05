@@ -1,2 +1,16 @@
-<!-- On remplace le contenu par notre nouveau composant -->
-<app-category-list></app-category-list>
+<!--<router-outlet></router-outlet> est une balise spéciale Angular
+
+Elle dit à Angular : “affiche ici le composant lié à la route actuelle”
+
+C’est obligatoire si tu veux que le routing (/categories, /categorie/:id, etc.) fonctionne.
+
+Résultat attendu
+Maintenant :
+
+Aller sur /categories ➜ affiche CategoryListComponent
+
+Aller sur /categorie/2 ➜ affiche ProduitListComponent
+
+Redirection / ➜ vers /categories
+-->
+<router-outlet></router-outlet>

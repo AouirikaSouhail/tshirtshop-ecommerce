@@ -1,0 +1,17 @@
+<!--Affiche le titre avec le numéro de la catégorie dynamique (ex : « Produits de la catégorie 3 »).-->
+<h2>Produits de la catégorie {{idCategorie}}</h2>
+<!--Message si aucun produit trouvé-->
+<div *ngIf="aucunProduit">
+    <p>aucun produit pour cette catégorie.</p>
+</div>
+
+<!--Liste des produits-->
+<!--Ce bloc ne s’affiche que si aucunProduit est false, c’est-à-dire si des produits existent.-->
+<div *ngIf="!aucunProduit" class="produit-container">
+ <div *ngFor="let produit of produits" class="produit-card" >
+    <img [src]="produit.imageUrl" alt="{{produit.name}}" class="produit-image"> <!--ajout après [title]="produit.description-->
+    <h3>{{produit.name}}</h3>
+    <p><strong>Marque:</strong>{{produit.brand}}</p>
+    <p><strong>Prix :</strong>{{produit.price}} €</p>
+ </div> 
+</div>
