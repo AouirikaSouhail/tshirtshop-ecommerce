@@ -8,13 +8,16 @@ import { RouterModule, Routes } from '@angular/router';
 //ProduitListComponent	Composant affiché quand on va sur /categorie/:id
 import { ProduitListComponent } from './components/produit-list/produit-list.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
+import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
 
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
 Chaque ligne dans ce tableau dit :
 “Si quelqu’un tape telle adresse (URL), montre-lui tel bâtiment (composant)
  */
+//Toujours mettre les routes les plus spécifiques en haut de la liste, car elles sont plus précises.
 const routes: Routes = [
+  {path:"produit/:id", component: ProduitDetailComponent}, // ✅ Détail produit (US03)
   {path: "categorie/:id", component: ProduitListComponent},
   {path:"categories", component: CategoryListComponent},
   {path:"", redirectTo: "/categories", pathMatch: "full"}

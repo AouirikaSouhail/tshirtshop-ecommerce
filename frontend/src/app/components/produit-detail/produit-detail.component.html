@@ -1,0 +1,15 @@
+<!--Affiche ce div seulement si la variable produit existe et n’est pas null ou undefined »
+
+Cela évite une erreur d’affichage quand Angular charge la page mais que le produit n’a pas encore été reçu du backend-->
+
+<div class="detail-container" *ngIf="produit">
+  <h2>{{ produit.name }}</h2>
+
+  <img [src]="produit.imageUrl" alt="{{ produit.name }}" class="detail-image" />
+
+  <p><strong>Marque :</strong> {{ produit.brand }}</p>
+  <p><strong>Prix :</strong> {{ produit.price }} €</p>
+  <p><strong>Description :</strong> {{ produit.description }}</p>
+
+  <a routerLink="/categories" class="btn-retour">⬅ Retour aux catégories</a>
+</div>

@@ -13,5 +13,19 @@
     <h3>{{produit.name}}</h3>
     <p><strong>Marque:</strong>{{produit.brand}}</p>
     <p><strong>Prix :</strong>{{produit.price}} €</p>
+    <a [routerLink]="['/produit', produit.id]">Voir les détails</a>
+    <!--Élément	                Signification
+    <a>	                        Une balise HTML classique de lien
+    [routerLink]	            Directive Angular spéciale pour changer de page sans recharger le site
+    ['/produit', produit.id]	Angular construit automatiquement /produit/5 si produit.id = 5
+    "Voir les détails"	        Texte cliquable visible à l’utilisateur-->
  </div> 
 </div>
+
+
+<!--- `{{ variable }}` : interpolation pour afficher une valeur.
+- `*ngIf="condition"` : directive pour afficher un bloc seulement si la condition est vraie.
+- `*ngFor="let item of liste"` : directive pour répéter un bloc pour chaque élément d’une liste.
+- `[src]="..."` et `[title]="..."` : liaison de propriété (binding Angular).
+
+-->
