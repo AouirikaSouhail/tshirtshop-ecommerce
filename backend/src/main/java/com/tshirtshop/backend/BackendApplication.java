@@ -32,9 +32,9 @@ public class BackendApplication {
 				categoryRepository.save(casquetteCat);
 
 				// ⚠️ Important : les produits ont besoin d'une catégorie déjà enregistrée.
-				productRepository.save(new Product(null, "T-Shirt rouge", "Nike", 19.99, "tshirt-rouge.jpg", tshirtCat));
-				productRepository.save(new Product(null, "Sweat capuche", "Adidas", 39.99, "sweat.jpg", sweatCat));
-				productRepository.save(new Product(null, "Casquette noire", "Puma", 14.99, "casquette.jpg", casquetteCat));
+				productRepository.save(new Product(null, "T-Shirt rouge", "Nike", 19.99, "tshirt-rouge.jpg","T-shirt confortable en coton bio, coupe classique, logo Nike brodé.", tshirtCat));
+				productRepository.save(new Product(null, "Sweat capuche", "Adidas", 39.99, "sweat.jpg","Sweat à capuche chaud et doux, idéal pour le sport ou la détente. Logo Adidas imprimé.", sweatCat));
+				productRepository.save(new Product(null, "Casquette noire", "Puma", 14.99, "casquette.jpg","Casquette unisexe noire ajustable avec logo Puma brodé. Style urbain et léger.", casquetteCat));
 			}
 			};
 	}

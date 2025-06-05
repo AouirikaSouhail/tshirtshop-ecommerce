@@ -19,7 +19,7 @@ public class Product {
     private String brand; //Marque du produit
     private double price; //prix
     private String imageUrl; //Url de l'image
-
+    private String description;
     //On fait le lien entre un produit et sa catégorie (ManyToOne = plusieurs produits pour une catégorie).
 
     @ManyToOne
@@ -30,13 +30,15 @@ public class Product {
     public Product() {}
 
     //Constructeur avec paramètres
-    public Product(Long id, String name, String brand, double price, String imageUrl, Category category) {
+    public Product(Long id, String name, String brand, double price, String imageUrl, String description, Category category ) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.description = description;
         this.category = category;
+
 
     }
     // Getters et setters (Spring en a besoin pour manipuler les données)
@@ -52,6 +54,8 @@ public class Product {
     public void setImageUrl(String imageUrl) {this.imageUrl = imageUrl;}
     public Category getCategory() {return category;}
     public void setCategory(Category category) {this.category = category;}
+    public String getDescription() {return description;}
+    public void setDescription(String description) {this.description = description;}
 
 
 }
