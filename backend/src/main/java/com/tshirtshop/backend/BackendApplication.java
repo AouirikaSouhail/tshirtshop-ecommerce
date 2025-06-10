@@ -22,19 +22,55 @@ public class BackendApplication {
 		return args -> {
 
 			if(categoryRepository.count() == 0 && productRepository.count() == 0) {
-			//C’est une insertion en base de données.
-				Category tshirtCat = new Category(null, "T-Shirts", "tshirt.jpg",null);
-				Category sweatCat = new Category(null, "Sweats", "sweat.jpg",null);
-				Category casquetteCat = new Category(null, "Casquettes", "casquette.jpg",null);
+			  //C’est une insertion en base de données.
+				Category persoCat = new Category(null, "T-shirts personnalisés", "assets/tshirt-perso.jpg", null);
+				Category humourCat = new Category(null, "T-shirts humour", "assets/tshirt-humour.jpg", null);
+				Category popCat = new Category(null, "T-shirts culture pop", "assets/tshirt-pop.jpg", null);
+				Category geekCat = new Category(null, "T-shirts geek / gaming", "assets/tshirt-geek.jpg", null);
+				Category engagedCat = new Category(null, "T-shirts engagés", "assets/tshirt-engage.jpg", null);
+				Category eventCat = new Category(null, "T-shirts événementiels", "assets/tshirt-event.jpg", null);
 
-				categoryRepository.save(tshirtCat);
-				categoryRepository.save(sweatCat);
-				categoryRepository.save(casquetteCat);
+				// Sauvegarde dans la base
+				categoryRepository.save(persoCat);
+				categoryRepository.save(humourCat);
+				categoryRepository.save(popCat);
+				categoryRepository.save(geekCat);
+				categoryRepository.save(engagedCat);
+				categoryRepository.save(eventCat);
 
-				// ⚠️ Important : les produits ont besoin d'une catégorie déjà enregistrée.
-				productRepository.save(new Product(null, "T-Shirt rouge", "Nike", 19.99, "tshirt-rouge.jpg","T-shirt confortable en coton bio, coupe classique, logo Nike brodé.", tshirtCat));
-				productRepository.save(new Product(null, "Sweat capuche", "Adidas", 39.99, "sweat.jpg","Sweat à capuche chaud et doux, idéal pour le sport ou la détente. Logo Adidas imprimé.", sweatCat));
-				productRepository.save(new Product(null, "Casquette noire", "Puma", 14.99, "casquette.jpg","Casquette unisexe noire ajustable avec logo Puma brodé. Style urbain et léger.", casquetteCat));
+				//  Important : les produits ont besoin d'une catégorie déjà enregistrée.
+
+				// Les produits doivent être liés à des catégories existantes
+
+				// 🔹 Produits : T-shirts personnalisés
+				productRepository.save(new Product(null, "T-shirt texte personnalisé", "YourStyle", 17.99, "assets/tshirt-texte.jpg", "Choisissez votre message et couleur. Impression recto ou recto/verso.", persoCat));
+				productRepository.save(new Product(null, "T-shirt photo imprimée", "PicWear", 19.99, "assets/tshirt-photo.jpg", "Téléchargez votre photo, effet premium garanti.", persoCat));
+
+				// 🔹 Produits : T-shirts humour
+				productRepository.save(new Product(null, "T-shirt \"J'peux pas j’ai code\"", "GeekFun", 14.99, "assets/tshirt-code.jpg", "Idéal pour les développeurs débordés.", humourCat));
+				productRepository.save(new Product(null, "T-shirt \"Chargement de motivation...\"", "Sarcastik", 15.00, "assets/tshirt-charge.jpg", "Barre de chargement imprimée.", humourCat));
+
+				// 🔹 Produits : T-shirts culture pop
+				productRepository.save(new Product(null, "T-shirt Star Wars Dark Vador", "RebelShop", 19.99, "assets/tshirt-vador.jpg", "\"Je suis ton t-shirt.\"", popCat));
+				productRepository.save(new Product(null, "T-shirt Marvel Avengers Endgame", "HeroLine", 23.99, "assets/tshirt-avengers.jpg", "Impression grand format, logo officiel.", popCat));
+
+				// 🔹 Produits : T-shirts geek / gaming
+				//productRepository.save(new Product(null, "T-shirt \"I Paused My Game\"", "GameRush", 15.99, "assets/tshirt-pause.jfif", "Message gamer imprimé en blanc.", geekCat));
+				//productRepository.save(new Product(null, "T-shirt Zelda Triforce", "NerdZone", 21.50, "assets/tshirt-zelda.jfif", "Imprimé doré du symbole Triforce.", geekCat));
+
+				// 🔹 Produits : T-shirts engagés
+				productRepository.save(new Product(null, "T-shirt \"Recycle or Die\"", "EcoLife", 16.50, "assets/tshirt-recycle.jpg", "Coton recyclé, message fort.", engagedCat));
+				productRepository.save(new Product(null, "T-shirt \"Planète B : introuvable\"", "GreenWorld", 18.99, "assets/tshirt-planete.jfif", "Texte imprimé sur fond vert forêt.", engagedCat));
+
+				// 🔹 Produits : T-shirts événementiels
+				productRepository.save(new Product(null, "T-shirt \"Team Marié(e)\"", "WeddingFun", 16.00, "assets/tshirt-mariee.jpg", "Idéal pour EVG/EVJF.", eventCat));
+				productRepository.save(new Product(null, "T-shirt \"Diplômé 2025\"", "GradZone", 18.00, "assets/tshirt-diplome.jfif", "Pour célébrer votre réussite.", eventCat));
+
+
+
+
+
+
 			}
 			};
 	}
