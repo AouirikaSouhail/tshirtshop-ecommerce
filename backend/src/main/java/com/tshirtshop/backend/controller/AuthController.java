@@ -4,6 +4,7 @@
 package com.tshirtshop.backend.controller;
 
 import com.tshirtshop.backend.dto.LoginRequest; // Pour récupérer l’email et le mot de passe envoyés par le frontend.
+import com.tshirtshop.backend.dto.RegisterRequest; // pour l inscription et vérification email unique.
 import com.tshirtshop.backend.model.User; //  Pour manipuler les utilisateurs.
 import com.tshirtshop.backend.repository.UserRepository; //  pour interagir avec la base de données.
 import org.springframework.http.ResponseEntity; // pour envoyer des réponses personnalisées (200 OK, 400 BAD REQUEST, etc.).
@@ -53,6 +54,22 @@ public class AuthController{
             //Si tout est bon → on renvoie l’objet User au frontend avec une réponse 200 (OK).
             // Attention, renvoyer l’objet User tel quel expose aussi le mot de passe.
             // créer un DTO de réponse (UserResponse) pour cacher les données sensibles.
+        }
+
+        @PostMapping("/register")
+        public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+          // On vérifie si un utilisateur existe déjà avec cet email
+          Optional<User> existingUser = userRepository.findByEmail(registerRequest.getEmail());
+          if (existingUser.isPresent()) {
+              return ResponseEntity.badRequest().body("Email déja utilisé.");
+          }
+          User newUser = new User();
+          newUser.setName(registerRequest.getFullName());
+          newUser.setEmail(registerRequest.getEmail());
+          newUser.setPassword(registerRequest.getPassword());
+
+          userRepository.save(newUser);
+          return ResponseEntity.ok().body("Inscription réussie.");
         }
     }
 

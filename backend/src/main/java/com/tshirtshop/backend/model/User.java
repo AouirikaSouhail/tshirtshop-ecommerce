@@ -13,6 +13,8 @@ import lombok.*;
 //Ce sont des annotations Lombok
 @Getter
 @Setter
+@Data  //@Data est une super-annotation Lombok : Elle inclut automatiquement :
+       //@Getter, @Setter ,@ToString , @EqualsAndHashCode @RequiredArgsConstructor.Tu n’as pas besoin de mettre @Getter et @Setter si tu mets déjà @Data.
 @NoArgsConstructor
 @AllArgsConstructor
 
