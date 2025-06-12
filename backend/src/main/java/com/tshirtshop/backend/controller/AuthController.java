@@ -5,6 +5,7 @@ package com.tshirtshop.backend.controller;
 
 import com.tshirtshop.backend.dto.LoginRequest; // Pour récupérer l’email et le mot de passe envoyés par le frontend.
 import com.tshirtshop.backend.dto.RegisterRequest; // pour l inscription et vérification email unique.
+import com.tshirtshop.backend.dto.UpdateUserRequest;
 import com.tshirtshop.backend.model.User; //  Pour manipuler les utilisateurs.
 import com.tshirtshop.backend.repository.UserRepository; //  pour interagir avec la base de données.
 import org.springframework.http.ResponseEntity; // pour envoyer des réponses personnalisées (200 OK, 400 BAD REQUEST, etc.).
@@ -70,6 +71,41 @@ public class AuthController{
 
           userRepository.save(newUser);
           return ResponseEntity.ok().body("Inscription réussie.");
+        }
+
+        //Tu veux mettre à jour un utilisateur existant (par exemple, changer son email ou mot de passe) → on utilise PUT
+        //La partie {id} dans l’URL, c’est une variable dynamique.
+        //Elle permet de dire au backend : « Je veux modifier l’utilisateur numéro 12 »
+        // Exemple : Si tu fais une requête : PUT /api/user/12
+
+        @PutMapping("/user/{id}")
+        //@PathVariable Long id signifie : « Prends le numéro dans l’URL et mets-le dans la variable id ».
+        public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
+        //On cherche en base si un utilisateur avec cet ID existe. Le résultat est un Optional<User>, qui peut être vide ou non.
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();// Si aucun utilisateur avec cet ID n’existe, on renvoie une réponse 404 Not Found.
+        }
+
+        //On récupère l'utilisateur à partir de l'Optional. Ici on est sûr que l’utilisateur existe (grâce au if juste au-dessus)
+        User user  = optionalUser.get();
+
+        // vérifier si l'email est utilisé par quelqu'un d'autre
+
+            Optional<User> userWithEmail = userRepository.findByEmail(updateUserRequest.getEmail());
+           //Un utilisateur existe déjà avec cet e-mail ?" &&
+            // && Si oui, alors on vérifie si cet utilisateur, ce n’est pas le même que celui qu’on est en train de modifier.
+           // Cela veut dire : "Ce n’est pas le même utilisateur (donc quelqu’un d’autre utilise déjà cet e-mail)".
+            if (userWithEmail.isPresent() && ! userWithEmail.get().getId().equals(id)) {
+                return ResponseEntity.badRequest().body("Email déjà utilisé par un autre utilisateur.");
+            }
+            // Mise à jour après vérification
+            user.setName(updateUserRequest.getFullName());
+            user.setEmail(updateUserRequest.getEmail());
+            user.setPassword(updateUserRequest.getPassword());
+            userRepository.save(user);
+
+            return ResponseEntity.ok().body("Profil mis à jour avec succès !");
         }
     }
 
