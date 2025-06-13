@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProduitListComponent } from './components/produit-list/produit-list.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
+import { LoginComponent } from './components/login/login.component';
 
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path:"produit/:id", component: ProduitDetailComponent}, // ✅ Détail produit (US03)
   {path: "categorie/:id", component: ProduitListComponent},
   {path:"categories", component: CategoryListComponent},
-  {path:"", redirectTo: "/categories", pathMatch: "full"}
+  {path:"", redirectTo: "/categories", pathMatch: "full"},
+  { path: 'login', component: LoginComponent }
   
 ];
 

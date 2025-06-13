@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProduitListComponent } from './components/produit-list/produit-list.component';
 import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
+import { LoginComponent } from './components/login/login.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,12 +15,15 @@ import { ProduitDetailComponent } from './components/produit-detail/produit-deta
     AppComponent,
     CategoryListComponent,
     ProduitListComponent,
-    ProduitDetailComponent
+    ProduitDetailComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;// @RestController, @RequestMap
 import java.util.Optional;
 @RestController // "Ceci est un contrôleur REST."Cela veut dire que cette classe va répondre aux requêtes HTTP (POST, GET, etc.) avec des objets JSON.
 @RequestMapping("/api")// Toutes les routes de cette classe commencent par /api. Donc ici, la route complète sera /api/login.
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController{
 
     private final UserRepository userRepository; // Tu déclares une variable de type UserRepository, que tu vas utiliser pour accéder à la base de données des utilisateurs.
