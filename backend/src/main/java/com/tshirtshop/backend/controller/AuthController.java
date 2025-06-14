@@ -11,6 +11,7 @@ import com.tshirtshop.backend.repository.UserRepository; //  pour interagir avec
 import org.springframework.http.ResponseEntity; // pour envoyer des réponses personnalisées (200 OK, 400 BAD REQUEST, etc.).
 import org.springframework.web.bind.annotation.*;// @RestController, @RequestMapping, @PostMapping, @RequestBody →
                                                  // des annotations Spring pour gérer les routes HTTP.
+import java.util.Collections;
 import java.util.Optional;
 @RestController // "Ceci est un contrôleur REST."Cela veut dire que cette classe va répondre aux requêtes HTTP (POST, GET, etc.) avec des objets JSON.
 @RequestMapping("/api")// Toutes les routes de cette classe commencent par /api. Donc ici, la route complète sera /api/login.
@@ -66,12 +67,22 @@ public class AuthController{
               return ResponseEntity.badRequest().body("Email déja utilisé.");
           }
           User newUser = new User();
-          newUser.setName(registerRequest.getFullName());
+          newUser.setName(registerRequest.getName());
           newUser.setEmail(registerRequest.getEmail());
           newUser.setPassword(registerRequest.getPassword());
 
           userRepository.save(newUser);
-          return ResponseEntity.ok().body("Inscription réussie.");
+          return ResponseEntity.ok().body(Collections.singletonMap("message", "Inscription réussie."));
+
+          /** Que fait Collections.singletonMap("message", "Inscription réussie.") exactement ?
+           Cette méthode ne parse rien du tout. Elle :
+
+            Crée un objet Java de type Map (clé/valeur)
+           Avec une seule paire :
+
+           clé : "message"
+
+           valeur : "Inscription réussie." */
         }
 
         //Tu veux mettre à jour un utilisateur existant (par exemple, changer son email ou mot de passe) → on utilise PUT

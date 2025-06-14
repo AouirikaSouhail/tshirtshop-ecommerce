@@ -10,6 +10,7 @@ import { ProduitListComponent } from './components/produit-list/produit-list.com
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path: "categorie/:id", component: ProduitListComponent},
   {path:"categories", component: CategoryListComponent},
   {path:"", redirectTo: "/categories", pathMatch: "full"},
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent }
   
 ];
 

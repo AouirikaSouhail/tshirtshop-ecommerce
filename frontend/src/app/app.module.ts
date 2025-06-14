@@ -8,6 +8,7 @@ import { ProduitListComponent } from './components/produit-list/produit-list.com
 import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
+import { RegisterComponent } from './components/register/register.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     CategoryListComponent,
     ProduitListComponent,
     ProduitDetailComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
