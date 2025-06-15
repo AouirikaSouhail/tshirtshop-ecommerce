@@ -8,6 +8,7 @@ import com.tshirtshop.backend.dto.RegisterRequest; // pour l inscription et vér
 import com.tshirtshop.backend.dto.UpdateUserRequest;
 import com.tshirtshop.backend.model.User; //  Pour manipuler les utilisateurs.
 import com.tshirtshop.backend.repository.UserRepository; //  pour interagir avec la base de données.
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity; // pour envoyer des réponses personnalisées (200 OK, 400 BAD REQUEST, etc.).
 import org.springframework.web.bind.annotation.*;// @RestController, @RequestMapping, @PostMapping, @RequestBody →
                                                  // des annotations Spring pour gérer les routes HTTP.
@@ -96,7 +97,8 @@ public class AuthController{
         //On cherche en base si un utilisateur avec cet ID existe. Le résultat est un Optional<User>, qui peut être vide ou non.
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {
-            return ResponseEntity.notFound().build();// Si aucun utilisateur avec cet ID n’existe, on renvoie une réponse 404 Not Found.
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Utilisateur introuvable"));// Si aucun utilisateur avec cet ID n’existe, on renvoie une réponse 404 Not Found.
         }
 
         //On récupère l'utilisateur à partir de l'Optional. Ici on est sûr que l’utilisateur existe (grâce au if juste au-dessus)
@@ -109,16 +111,30 @@ public class AuthController{
             // && Si oui, alors on vérifie si cet utilisateur, ce n’est pas le même que celui qu’on est en train de modifier.
            // Cela veut dire : "Ce n’est pas le même utilisateur (donc quelqu’un d’autre utilise déjà cet e-mail)".
             if (userWithEmail.isPresent() && ! userWithEmail.get().getId().equals(id)) {
-                return ResponseEntity.badRequest().body("Email déjà utilisé par un autre utilisateur.");
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Email déjà utilisé par un autre utilisateur."));
+
             }
             // Mise à jour après vérification
-            user.setName(updateUserRequest.getFullName());
+            user.setName(updateUserRequest.getName());
             user.setEmail(updateUserRequest.getEmail());
             user.setPassword(updateUserRequest.getPassword());
             userRepository.save(user);
 
-            return ResponseEntity.ok().body("Profil mis à jour avec succès !");
+            return ResponseEntity.ok(Collections.singletonMap("message", "Profil mis à jour avec succès !"));
+
         }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Utilisateur non trouvé"));
+        }
+
+        return ResponseEntity.ok(optionalUser.get());
+    }
     }
 
 

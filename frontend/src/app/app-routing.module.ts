@@ -11,6 +11,7 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path:"categories", component: CategoryListComponent},
   {path:"", redirectTo: "/categories", pathMatch: "full"},
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'profile-edit/:id', component: ProfileEditComponent }
   
 ];
 

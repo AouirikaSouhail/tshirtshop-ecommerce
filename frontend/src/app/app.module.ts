@@ -9,6 +9,8 @@ import { ProduitDetailComponent } from './components/produit-detail/produit-deta
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
+import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { RegisterComponent } from './components/register/register.component';
     ProduitListComponent,
     ProduitDetailComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileEditComponent
   ],
   imports: [
     BrowserModule,
