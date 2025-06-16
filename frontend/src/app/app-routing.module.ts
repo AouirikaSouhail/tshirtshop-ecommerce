@@ -12,6 +12,9 @@ import { ProduitDetailComponent } from './components/produit-detail/produit-deta
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+import { RgpdComponent } from './components/rgpd/rgpd.component';
+import { CgvComponent } from './components/cgv/cgv.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
@@ -26,7 +29,10 @@ const routes: Routes = [
   {path:"", redirectTo: "/categories", pathMatch: "full"},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'profile-edit/:id', component: ProfileEditComponent }
+  { path: 'profile-edit/:id', component: ProfileEditComponent },
+  { path: 'rgpd', component: RgpdComponent },
+  { path: 'conditions-generales', component: CgvComponent },
+  { path: 'contact', component: ContactComponent }
   
 ];
 

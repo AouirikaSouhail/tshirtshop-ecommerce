@@ -11,7 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { AuthInterceptor } from './auth.interceptor';
-import { HeaderComponent } from './components/header/header.component'; // ← Bien placé
+import { HeaderComponent } from './components/header/header.component';
+import { RgpdComponent } from './components/rgpd/rgpd.component';
+import { CgvComponent } from './components/cgv/cgv.component';
+import { ContactComponent } from './components/contact/contact.component'; // ← Bien placé
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { HeaderComponent } from './components/header/header.component'; // ← B
     LoginComponent,
     RegisterComponent,
     ProfileEditComponent,
-    HeaderComponent
+    HeaderComponent,
+    RgpdComponent,
+    CgvComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

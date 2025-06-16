@@ -1,4 +1,4 @@
-/* Structure de la page */
+/* Structure globale */
 html, body {
   height: 100%;
   margin: 0;
@@ -6,52 +6,11 @@ html, body {
   background-color: #fff;
 }
 
-.app-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Contenu principal pousse le footer vers le bas */
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
-
-/* Footer FIXE en bas avec design */
-.footer {
-  background-color: #eeeeee;
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  width: 100%;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.site-header {
-  background-color: #111;
-  padding: 20px 0;
-  text-align: center;
-}
-
-.site-title {
-  color: white;
-  font-size: 32px;
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-}
-/* Structure responsive : toute la hauteur d'écran */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-}
-
+/* Conteneur principal */
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* prend toute la hauteur de l'écran */
+  min-height: 100vh;
 }
 
 /* HEADER */
@@ -60,44 +19,51 @@ html, body {
   color: white;
   padding: 20px 0;
   text-align: center;
+  position: sticky; /* reste visible au scroll */
+  top: 0;
+  z-index: 1000;
 }
 
 .site-title {
   margin: 0;
   font-size: 32px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
 }
 
-/* CONTENU qui s'étire */
-.main-content {
-  flex: 1; /* pousse le footer vers le bas */
-  padding: 20px;
-}
-
-/* FOOTER FIXE mais fluide */
-.footer {
-  background-color: #eee;
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  border-top: 1px solid #ccc;
-}
-
-.page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
+/* MAIN CONTENT */
 .main-content {
   flex: 1;
   padding: 20px;
   background-color: #f9f9f9;
 }
 
+/* FOOTER */
 .footer {
-  background-color: #222;
+  background-color: #272424;
   color: white;
   text-align: center;
-  padding: 10px;
+  padding: 20px 10px;
+  font-size: 16px; /* ← taille augmentée */
+  margin-top: 30px;
+  width: 100%;
 }
 
+.footer-links {
+  margin-top: 12px;
+}
+
+.footer-links a {
+  margin: 0 20px;
+  text-decoration: none;
+  color: #ccc;
+  font-weight: 600;
+  font-size: 18px; /* ← taille augmentée */
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: #007bff;
+}
