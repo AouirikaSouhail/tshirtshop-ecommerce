@@ -5,12 +5,21 @@ import { HttpClient } from '@angular/common/http';
 //Tu importes Router, qui permet de naviguer d’une page à une autre en Angular.
 import { Router } from '@angular/router';
 
+interface LoginResponse {
+  token: string;
+  id: number;
+  name: string;
+  email: string;
+}
+
 //Tu déclares ton composant Angular :
 @Component({
   selector: 'app-login',  // selector : nom du composant (<app-login> dans HTML)
   templateUrl: './login.component.html',  //templateUrl : chemin du fichier HTML associé
   styleUrls: ['./login.component.css']      //styleUrls : style CSS associé à ce composant
 })
+
+ 
 
 //Tu crées la classe LoginComponent qui contient la logique du formulaire de connexion
 export class LoginComponent {
@@ -19,6 +28,7 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
   
+ 
   //Le constructeur injecte deux outils : HttpClient : pour envoyer des données vers le backend
   //Router : pour rediriger l’utilisateur vers une autre page après connexion
   constructor(private http: HttpClient, private router: Router){}
@@ -33,10 +43,15 @@ export class LoginComponent {
           };
 
     // Tu fais une requête POST vers ton backend Spring Boot à l’URL /api/login, avec les données du formulaire.
-          this.http.post('http://localhost:8080/api/login',loginData).subscribe({
+          this.http.post<LoginResponse>('http://localhost:8080/api/login',loginData).subscribe({
             //Si le login fonctionne, tu rediriges l’utilisateur vers la page /categories.
-            next : (reponse) =>{
+            next : (reponse : LoginResponse) =>{
               console.log(reponse);
+              // 🔐 Sauvegarde des données reçues dans le localStorage
+               localStorage.setItem('token', reponse.token);
+               localStorage.setItem('userId', reponse.id.toString());
+               localStorage.setItem('userName', reponse.name);
+              localStorage.setItem('userEmail', reponse.email);
               this.router.navigate(['/categories']);
               
 

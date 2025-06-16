@@ -1,6 +1,6 @@
+
 <h2>Liste des catégories</h2>
-<!--  Bouton de retour -->
-<a routerLink="/" class="btn-retour">⬅ Retour à l’accueil</a>
+
 <div *ngFor="let category of categories" class="categorie-card">
     <a [routerLink]="['/categorie', category.id]">
     <h3>{{category.name}}</h3>
@@ -14,3 +14,4 @@
 "let category of categories"	      C’est du code Angular, pas du texte. Angular comprend et exécute la boucle
 categories	                          C’est une variable publique dans le fichier TypeScript. Le HTML y a accès automatiquement car ils sont liés dans le même composant
 -->
+

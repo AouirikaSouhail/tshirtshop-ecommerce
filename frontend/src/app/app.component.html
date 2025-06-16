@@ -14,11 +14,11 @@ Aller sur /categorie/2 ➜ affiche ProduitListComponent
 Redirection / ➜ vers /categories
 -->
 <div class="page-container">
-  <header class="site-header">
-    <h1 class="site-title">TShirtShop</h1>
-  </header>
+  <!--  Ton composant header Angular -->
+  <app-header></app-header>
 
   <main class="main-content">
+    <!-- Ici, s'affiche dynamiquement la page actuelle -->
     <router-outlet></router-outlet>
   </main>
 
