@@ -8,21 +8,39 @@ import com.tshirtshop.backend.dto.RegisterRequest; // pour l inscription et vér
 import com.tshirtshop.backend.dto.UpdateUserRequest;
 import com.tshirtshop.backend.model.User; //  Pour manipuler les utilisateurs.
 import com.tshirtshop.backend.repository.UserRepository; //  pour interagir avec la base de données.
+import com.tshirtshop.backend.security.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity; // pour envoyer des réponses personnalisées (200 OK, 400 BAD REQUEST, etc.).
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;// @RestController, @RequestMapping, @PostMapping, @RequestBody →
                                                  // des annotations Spring pour gérer les routes HTTP.
+
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import com.tshirtshop.backend.security.JwtUtil;
+
 @RestController // "Ceci est un contrôleur REST."Cela veut dire que cette classe va répondre aux requêtes HTTP (POST, GET, etc.) avec des objets JSON.
 @RequestMapping("/api")// Toutes les routes de cette classe commencent par /api. Donc ici, la route complète sera /api/login.
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController{
 
     private final UserRepository userRepository; // Tu déclares une variable de type UserRepository, que tu vas utiliser pour accéder à la base de données des utilisateurs.
-
-    public AuthController(UserRepository userRepository) {
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    // Modifie le constructeur pour inclure le passwordEncoder
+    public AuthController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil,AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login") // Cette méthode va répondre à une requête POST vers /api/login.
@@ -43,24 +61,43 @@ public class AuthController{
      *         soit un message d'erreur (email non trouvé ou mot de passe incorrect).
      */
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        // Étape 1 : Récupérer l'utilisateur depuis la base
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
         if (optionalUser.isEmpty()) {
             return ResponseEntity.badRequest().body("Utilisateur non trouvé.");
         }
-        //On récupère l'utilisateur à partir de l’objet Optional.
+
+        // On récupère l'utilisateur à partir de l’objet Optional.
         // On ne fait ça que parce qu’on est sûr que optionalUser n’est pas vide (grâce à if juste au-dessus).
         User user = optionalUser.get();
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
-            return ResponseEntity.badRequest().body("Mot de passe incorrete.");
-        }
-            return ResponseEntity.ok().body(user); // Pour l'instant, on renvoie l’objet User directement.
 
-            //Si tout est bon → on renvoie l’objet User au frontend avec une réponse 200 (OK).
-            // Attention, renvoyer l’objet User tel quel expose aussi le mot de passe.
-            // créer un DTO de réponse (UserResponse) pour cacher les données sensibles.
+        // Modifier la méthode login() pour vérifier un mot de passe haché
+        /** loginRequest.getPassword() → c’est le mot de passe en clair tapé par l'utilisateur.
+         user.getPassword() → c’est le mot de passe haché en base (ex : $2a$10$yKy...).
+         passwordEncoder.matches() → c’est une méthode qui compare intelligemment les deux et renvoie true ou false. */
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest().body("Mot de passe incorrect.");
         }
 
-        @PostMapping("/register")
+        // ✅ Génération du token
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        // ✅ Construction de la réponse avec plusieurs champs
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("id", user.getId());
+        response.put("name", user.getName());
+        response.put("email", user.getEmail());
+
+        // Si tout est bon → on renvoie l’objet User au frontend avec une réponse 200 (OK).
+        // Attention, renvoyer l’objet User tel quel expose aussi le mot de passe.
+        // créer un DTO de réponse (UserResponse) pour cacher les données sensibles.
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/register")
         public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
           // On vérifie si un utilisateur existe déjà avec cet email
           Optional<User> existingUser = userRepository.findByEmail(registerRequest.getEmail());
@@ -70,7 +107,8 @@ public class AuthController{
           User newUser = new User();
           newUser.setName(registerRequest.getName());
           newUser.setEmail(registerRequest.getEmail());
-          newUser.setPassword(registerRequest.getPassword());
+          // Cela hachera le mot de passe avant de le sauvegarder en base. Rajout méthode passwordEncoder.encode()
+          newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
           userRepository.save(newUser);
           return ResponseEntity.ok().body(Collections.singletonMap("message", "Inscription réussie."));

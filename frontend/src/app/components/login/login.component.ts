@@ -35,7 +35,12 @@ export class LoginComponent {
     // Tu fais une requête POST vers ton backend Spring Boot à l’URL /api/login, avec les données du formulaire.
           this.http.post('http://localhost:8080/api/login',loginData).subscribe({
             //Si le login fonctionne, tu rediriges l’utilisateur vers la page /categories.
-            next : () =>{this.router.navigate(['/categories'])}, //redirection après succès
+            next : (reponse) =>{
+              console.log(reponse);
+              this.router.navigate(['/categories']);
+              
+
+            }, //redirection après succès
             error : (error) => {
                                this.errorMessage = "Email ou mot de passe incorrect.";
                                console.error(error);//Si le login échoue (ex. mauvais mot de passe), tu affiches un message d’erreur.

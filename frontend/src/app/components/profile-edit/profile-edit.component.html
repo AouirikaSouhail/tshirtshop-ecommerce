@@ -6,19 +6,19 @@
 Quand l’utilisateur clique sur le bouton Soumettre, Angular appelle la méthode onSubmit() définie dans le fichier .ts du composant.
 -->
 <form (ngSubmit)="onSubmit()">
-    // Champ pour le nom
+    <!--Champ pour le nom-->
     <label>Nom :</label>
      <input type="text" [(ngModel)]="name" name="name" required/>
       
-     // Champ pour l'email
+     <!--Champ pour l'email-->
      <label>Email :</label>
      <input type="email" [(ngModel)]="email" name="email" required/>
 
-     // Champ pour le mot de passe
+     <!--Champ pour le mot de passe-->
      <label>Password :</label>
      <input type="password" [(ngModel)]="password" name="password" required/>
      
-     // Bouton pour Soumettre le formulaire
+     <!-- Bouton pour Soumettre le formulaire -->
      <button type="submit">Sauvegarder</button>
 </form>
 
