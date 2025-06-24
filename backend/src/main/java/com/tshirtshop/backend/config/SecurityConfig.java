@@ -79,6 +79,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // ✅ Autorisé sans être connecté
+                        .requestMatchers(HttpMethod.PUT,"/products/{id}").hasRole("ADMIN") // 🛡️ Accès réservé aux admins
+                        .requestMatchers(HttpMethod.DELETE,"/products/{id}").hasRole("ADMIN") // 🛡️ Accès réservé aux admins
+                        .requestMatchers(HttpMethod.POST,"/products/category/{categoryId}").hasRole("ADMIN") // 🛡️ Accès réservé aux admins
                         .anyRequest().authenticated() // 🔒 Tout le reste doit être authentifié
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // ⬅️ Ajout du filtre ici

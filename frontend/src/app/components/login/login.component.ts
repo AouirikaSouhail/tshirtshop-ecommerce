@@ -27,7 +27,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  
+  successMessage: string ='';
  
   //Le constructeur injecte deux outils : HttpClient : pour envoyer des données vers le backend
   //Router : pour rediriger l’utilisateur vers une autre page après connexion
@@ -52,7 +52,15 @@ export class LoginComponent {
                localStorage.setItem('userId', reponse.id.toString());
                localStorage.setItem('userName', reponse.name);
               localStorage.setItem('userEmail', reponse.email);
-              this.router.navigate(['/categories']);
+
+              // ✅ Afficher le message
+              this.successMessage = 'Connexion réussie ✅';
+
+             //  Attendre 2 secondes avant de rediriger
+            setTimeout(() => {
+                         this.router.navigate(['/categories']);
+                          }, 2000);
+              
               
 
             }, //redirection après succès

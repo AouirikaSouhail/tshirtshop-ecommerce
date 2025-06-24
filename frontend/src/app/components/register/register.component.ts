@@ -48,6 +48,10 @@ export class RegisterComponent {
       /**next s'exécute si la requête a réussi (HTTP 200 OK) : Tu affiches un message de succès
         Puis tu rediriges l’utilisateur vers la page /login après 2 secondes */
       next : () =>{
+        if (!this.email.includes('@')) {
+        this.errorMessage = "Adresse email invalide.";
+          return;
+        }
         this.successMessage = "Inscription réussie ! Redirection en cours...";
         setTimeout(()=> this.router.navigate(['/login']),2000);
       },

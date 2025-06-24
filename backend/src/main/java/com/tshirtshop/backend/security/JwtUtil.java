@@ -31,9 +31,10 @@ public class JwtUtil {
     /**
      *  Méthode pour créer un token JWT en donnant un email.
      */
-    public String generateToken(String email) {
+    public String generateToken(String email,String role) {
         return Jwts.builder() //  Commence la construction du token
                 .setSubject(email) //  Le "sujet" du token (souvent l'identifiant) → ici, l’email de l’utilisateur
+                .claim("role", role) // // Ajoute le rôle comme information ("claim") dans le token
                 .setIssuedAt(new Date()) //  Date de création du token
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Date d’expiration
                 .signWith(secretKey) // Signature avec la clé secrète
@@ -46,6 +47,19 @@ public class JwtUtil {
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject); // récupère ce qu’on a mis en setSubject → l’email
     }
+     // méthode pour extraire le rôle depuis le token
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+   // méthode privée pour lire tous les claims
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
 
     /**
      * Vérifie si un token est encore valide pour un email donné

@@ -88,7 +88,8 @@ export class ProfileEditComponent implements OnInit {
         setTimeout (() => this.router.navigate(['/categories']), 2000);
       },
       error : (error) => { // En cas d’erreur de mise à jour
-        this.errorMessage = error.error; // Message d’erreur personnalisé
+        this.errorMessage = error.error?.error || "Une erreur est survenue lors de la mise à jour.";
+ // Message d’erreur personnalisé
         console.error(error); // Affichage en console
       }
     });

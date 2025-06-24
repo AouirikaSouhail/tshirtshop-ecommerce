@@ -80,7 +80,7 @@ public class AuthController{
         }
 
         // ✅ Génération du token
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         // ✅ Construction de la réponse avec plusieurs champs
         Map<String, Object> response = new HashMap<>();

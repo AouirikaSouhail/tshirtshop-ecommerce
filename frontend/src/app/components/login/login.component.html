@@ -26,6 +26,7 @@ Elle déclenche la méthode onSubmit() (dans le fichier login.component.ts) quan
     <button type="submit">Se connecter</button>
 </form>
 
+<p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
 <!--“Afficher ce paragraphe seulement si errorMessage n’est pas vide ou null.” -->
 <p *ngIf="errorMessage" style="color: red;">{{errorMessage}}</p>
 

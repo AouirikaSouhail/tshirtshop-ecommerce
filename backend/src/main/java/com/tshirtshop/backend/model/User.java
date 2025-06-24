@@ -32,6 +32,16 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    /**
+     Explication :
+     role est un champ texte qui contiendra "ROLE_USER" ou "ROLE_ADMIN".
+     On lui donne "ROLE_USER" par défaut à l’inscription.
+     Tu peux manuellement définir "ROLE_ADMIN" dans la BDD ou via un endpoint admin.
+     */
+
+    @Column(nullable = false)
+    private String role = "ROLE_USER"; // Par défaut, tous les utilisateurs ont ce rôle
 }
 
 /**
