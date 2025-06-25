@@ -20,7 +20,12 @@
           {{ item.produit.name }}
         </a>
       </td>
-      <td>{{ item.quantite }}</td>
+      <td>
+  <button (click)="diminuer(item.produit.id)">➖</button>
+  {{ item.quantite }}
+  <button (click)="augmenter(item.produit.id)">➕</button>
+</td>
+
       <td>{{ item.produit.price }} €</td>
       <td>{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
     </tr>

@@ -55,4 +55,23 @@ export class PanierService {
       this.items = JSON.parse(data);
     }
   }
+
+  augmenterQuantite(id: number): void {
+  const item = this.items.find(p => p.produit.id === id);
+  if (item) {
+    item.quantite++;
+    this.sauvegarderDansLocalStorage();
+  }
+}
+
+diminuerQuantite(id: number): void {
+  const item = this.items.find(p => p.produit.id === id);
+  if (item && item.quantite > 1) {
+    item.quantite--;
+    this.sauvegarderDansLocalStorage();
+  } else if (item && item.quantite === 1) {
+    this.supprimerProduit(id);
+  }
+}
+
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProduitService, Produit } from '../../services/produit.service';
+import { PanierService } from '../../services/panier.service';
 
 @Component({
   selector: 'app-produit-detail',
@@ -15,7 +16,8 @@ export class ProduitDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private produitService: ProduitService
+    private produitService: ProduitService,
+    private panierService: PanierService
   ) {}
 
   ngOnInit(): void {
@@ -35,4 +37,11 @@ export class ProduitDetailComponent implements OnInit {
       );
     });
   }
+  ajouterAuPanier(): void {
+  if (this.produit) {
+    this.panierService.ajouterProduit(this.produit);
+    alert('Produit ajouté au panier !');
+  }
+}
+
 }
