@@ -1,0 +1,14 @@
+<h2>Ajouter un produit</h2>
+<form (ngSubmit)="addProduct()">
+  <input type="text" [(ngModel)]="product.name" name="name" placeholder="Nom" required />
+  <input type="number" [(ngModel)]="product.price" name="price" placeholder="Prix" required />
+  <input type="text" [(ngModel)]="product.description" name="description" placeholder="Description" />
+  <input type="text" [(ngModel)]="product.imageUrl" name="imageUrl" placeholder="URL de l’image" />
+  
+  <select [(ngModel)]="product.categoryId" name="categoryId" required>
+    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+  </select>
+
+  <button type="submit">Ajouter</button>
+</form>
+

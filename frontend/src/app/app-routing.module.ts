@@ -15,7 +15,8 @@ import { ProfileEditComponent } from './components/profile-edit/profile-edit.com
 import { RgpdComponent } from './components/rgpd/rgpd.component';
 import { CgvComponent } from './components/cgv/cgv.component';
 import { ContactComponent } from './components/contact/contact.component';
-
+import {AddProductComponent} from './components/add-product/add-product.component'
+import {EditProductComponent} from './components/edit-product/edit-product.component'
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
 Chaque ligne dans ce tableau dit :
@@ -32,7 +33,11 @@ const routes: Routes = [
   { path: 'profile-edit/:id', component: ProfileEditComponent },
   { path: 'rgpd', component: RgpdComponent },
   { path: 'conditions-generales', component: CgvComponent },
-  { path: 'contact', component: ContactComponent }
+  { path: 'contact', component: ContactComponent },
+  { path: 'add-product', component: AddProductComponent },
+  { path: 'edit-product/:id', component: EditProductComponent }
+
+
   
 ];
 

@@ -64,6 +64,14 @@ export class ProduitService {
    getProduitParId(id: number) : Observable<Produit>{
     return this.http.get<Produit>(`${this.baseUrl}/${id}`);
    }
+
+
+   // ✅ Tu ajoutes cette méthode pour la suppression :
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+   
   }
 
 

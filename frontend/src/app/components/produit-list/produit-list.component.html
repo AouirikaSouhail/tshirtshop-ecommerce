@@ -22,6 +22,15 @@
     [routerLink]	            Directive Angular spéciale pour changer de page sans recharger le site
     ['/produit', produit.id]	Angular construit automatiquement /produit/5 si produit.id = 5
     "Voir les détails"	        Texte cliquable visible à l’utilisateur-->
+    <br/>
+    <br/>
+    <!--  Bouton Modifier -->
+  <button [routerLink]="['/edit-product', produit.id]">✏️ Modifier</button>
+  <br/>
+    <br/>
+  <!--  Bouton Supprimer -->
+  <button (click)="deleteProduct(produit.id)">🗑️ Supprimer</button>
+
  </div> 
 </div>
 

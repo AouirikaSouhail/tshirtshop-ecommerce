@@ -74,6 +74,12 @@ export class ProduitListComponent implements OnInit {
     }
   );
 }
+// ✅ Méthode bien à l’intérieur de la classe
+  deleteProduct(id: number): void {
+    if (confirm("Es-tu sûr de vouloir supprimer ce produit ?")) {
+      this.produitService.deleteProduct(id).subscribe(() => {
+        this.produits = this.produits.filter(p => p.id !== id);
+      });
+    }
+  }
 }
-    
-      

@@ -14,7 +14,9 @@ import { AuthInterceptor } from './auth.interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { RgpdComponent } from './components/rgpd/rgpd.component';
 import { CgvComponent } from './components/cgv/cgv.component';
-import { ContactComponent } from './components/contact/contact.component'; // ← Bien placé
+import { ContactComponent } from './components/contact/contact.component';
+import { AddProductComponent } from './components/add-product/add-product.component';
+import { EditProductComponent } from './components/edit-product/edit-product.component'; // ← Bien placé
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ContactComponent } from './components/contact/contact.component'; // �
     HeaderComponent,
     RgpdComponent,
     CgvComponent,
-    ContactComponent
+    ContactComponent,
+    AddProductComponent,
+    EditProductComponent
   ],
   imports: [
     BrowserModule,
