@@ -1,0 +1,32 @@
+<h2>🛒 Mon Panier</h2>
+
+<div *ngIf="produitsDansPanier.length === 0">
+  <p>Ton panier est vide pour le moment.</p>
+</div>
+
+<table *ngIf="produitsDansPanier.length > 0" class="table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Quantité</th>
+      <th>Prix unitaire</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of produitsDansPanier">
+      <td>
+        <a [routerLink]="['/produit', item.produit.id]">
+          {{ item.produit.name }}
+        </a>
+      </td>
+      <td>{{ item.quantite }}</td>
+      <td>{{ item.produit.price }} €</td>
+      <td>{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 *ngIf="produitsDansPanier.length > 0">
+  🧾 Total : {{ totalPanier | number:'1.2-2' }} €
+</h3>

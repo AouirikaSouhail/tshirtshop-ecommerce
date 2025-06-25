@@ -16,7 +16,8 @@ import { RgpdComponent } from './components/rgpd/rgpd.component';
 import { CgvComponent } from './components/cgv/cgv.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
-import { EditProductComponent } from './components/edit-product/edit-product.component'; // ← Bien placé
+import { EditProductComponent } from './components/edit-product/edit-product.component';
+import { PanierComponent } from './components/panier/panier.component'; // ← Bien placé
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { EditProductComponent } from './components/edit-product/edit-product.com
     CgvComponent,
     ContactComponent,
     AddProductComponent,
-    EditProductComponent
+    EditProductComponent,
+    PanierComponent
   ],
   imports: [
     BrowserModule,
