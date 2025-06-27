@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PanierService, PanierItem } from '../../services/panier.service';
 import { Produit } from '../../services/produit.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-panier',
@@ -12,7 +14,7 @@ export class PanierComponent implements OnInit {
   produitsDansPanier: PanierItem[] = []; // ✅ utilise l'interface bien exportée
   totalPanier: number = 0;
 
-  constructor(private panierService: PanierService) {}
+  constructor(private panierService: PanierService, private router : Router) {}
 
   ngOnInit(): void {
     this.produitsDansPanier = this.panierService.getItems();
@@ -42,5 +44,25 @@ private recalculerPanier(): void {
   this.produitsDansPanier = this.panierService.getItems();
   this.totalPanier = this.panierService.getTotal();
 }
+
+supprimer(id: number): void {
+  const confirmation = confirm("Supprimer ce produit du panier ?");
+  if (confirmation) {
+    this.panierService.supprimerProduit(id);
+    this.recalculerPanier();
+  }
+}
+
+validerCommande(): void {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Connectez-vous ou créez un compte pour finaliser la commande');
+    this.router.navigate(['/login']);
+    return;
+  }
+  this.router.navigate(['/checkout']);
+}
+
+
 
 }

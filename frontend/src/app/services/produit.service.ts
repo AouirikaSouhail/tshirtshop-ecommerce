@@ -11,18 +11,31 @@ Ici, on dit :
 "Un produit est un objet avec un id, un name, une brand, un price, un imageUrl, et une category."
 La category est elle-même un objet imbriqué, avec un id et un name.
  */
-export interface Produit{
- id: number;
- name: string;
- brand: string;
- price: number;
- imageUrl: string;
- description : string;
- category: {
+export interface Produit {
   id: number;
   name: string;
- };
+  brand: string;
+  price: number;
+  imageUrl: string;
+  description: string;
+  category: {
+    id: number;
+    name: string;
+  };
+  quantiteStock: number; 
 }
+
+export interface ProductDetails {
+  id: number;
+  name: string;
+  brand: string;
+  price: number;
+  imageUrl: string;
+  description: string;
+  categoryName: string; // <--- string seul ici, pas un objet
+  quantiteStock: number;
+}
+
 
 /**Déclaration du service
  * ➡️ Ce décorateur indique à Angular :
@@ -60,10 +73,12 @@ export class ProduitService {
 
  
  // Récupère un produit précis par son ID (pour US03)
+ // pour (US10) Tu récupéreras maintenant un objet complet avec tous les détails du produit + la quantité en stock.
    
-   getProduitParId(id: number) : Observable<Produit>{
-    return this.http.get<Produit>(`${this.baseUrl}/${id}`);
-   }
+   getProduitParId(id: number): Observable<ProductDetails> {
+  return this.http.get<ProductDetails>(`${this.baseUrl}/${id}`);
+}
+
 
 
    // ✅ Tu ajoutes cette méthode pour la suppression :

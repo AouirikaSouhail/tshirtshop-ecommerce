@@ -21,15 +21,31 @@ export class PanierService {
     return this.items;
   }
 
-  ajouterProduit(produit: Produit, quantite: number = 1): void {
-    const index = this.items.findIndex(p => p.produit.id === produit.id);
-    if (index > -1) {
-      this.items[index].quantite += quantite;
+ ajouterProduit(produit: Produit, quantite: number = 1): void {
+  const index = this.items.findIndex(p => p.produit.id === produit.id);
+
+  if (index > -1) {
+    const totalSouhaite = this.items[index].quantite + quantite;
+    const quantiteMax = produit.quantiteStock;
+
+    if (totalSouhaite <= quantiteMax) {
+      this.items[index].quantite = totalSouhaite;
     } else {
-      this.items.push({ produit, quantite });
+      alert(`Stock insuffisant. Il ne reste que ${quantiteMax - this.items[index].quantite} unité(s).`);
+      return;
     }
-    this.sauvegarderDansLocalStorage();
+  } else {
+    if (quantite <= produit.quantiteStock) {
+      this.items.push({ produit, quantite });
+    } else {
+      alert(`Stock insuffisant. Il ne reste que ${produit.quantiteStock} unité(s).`);
+      return;
+    }
   }
+
+  this.sauvegarderDansLocalStorage();
+}
+
 
   supprimerProduit(id: number): void {
     this.items = this.items.filter(p => p.produit.id !== id);
@@ -56,13 +72,19 @@ export class PanierService {
     }
   }
 
-  augmenterQuantite(id: number): void {
+augmenterQuantite(id: number): void {
   const item = this.items.find(p => p.produit.id === id);
   if (item) {
-    item.quantite++;
-    this.sauvegarderDansLocalStorage();
+    if (item.quantite < item.produit.quantiteStock) {
+      item.quantite++;
+      this.sauvegarderDansLocalStorage();
+    } else {
+      alert("❌ Stock maximal atteint !");
+    }
   }
 }
+
+
 
 diminuerQuantite(id: number): void {
   const item = this.items.find(p => p.produit.id === id);

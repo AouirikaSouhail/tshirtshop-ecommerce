@@ -2,10 +2,13 @@
 package com.tshirtshop.backend.controller;
 
 // On importe les classes nécessaires
+import com.tshirtshop.backend.dto.ProductDetails;
 import com.tshirtshop.backend.model.Product;
 import com.tshirtshop.backend.model.Category;
+import com.tshirtshop.backend.model.Stock;
 import com.tshirtshop.backend.repository.ProductRepository;
 import com.tshirtshop.backend.repository.CategoryRepository;
+import com.tshirtshop.backend.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +32,9 @@ public class ProductController {
     @Autowired
     // On injecte automatiquement l’objet categoryRepository (accès à la base de données des catégories)
     private CategoryRepository categoryRepository;
-
+    @Autowired
+    // On injecte automatiquement l’objet stockRepository (accès à la base de données des stocks)
+    private StockRepository stockRepository;
     // Route GET : /products/by-category/{categoryId}
     // Elle permet d’afficher les produits d’une catégorie spécifique
     @GetMapping("/by-category/{categoryId}")
@@ -49,18 +54,33 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id){
-       Optional<Product> optionalProduct = productRepository.findById(id);
-       if(optionalProduct.isPresent()){
-             Product product = optionalProduct.get();
-           // Si le produit existe → on le renvoie avec un code 200 OK
-           return ResponseEntity.ok(product);
-       }
-       else{
-           // Sinon → on renvoie une erreur 404 Not Found
-           return ResponseEntity.notFound().build();
-       }
+    public ResponseEntity<ProductDetails> findById(@PathVariable Long id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+
+            // On va chercher le stock du produit
+            // var stock est possible depuis java 10 le compilateur peut reconnaitre automatiquement le type
+            Stock stock = stockRepository.findByProduitId(product.getId());
+
+            // ✨ On prépare le DTO avec toutes les infos, y compris le stock
+            ProductDetails dto = new ProductDetails();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setBrand(product.getBrand());
+            dto.setPrice(product.getPrice());
+            dto.setImageUrl(product.getImageUrl());
+            dto.setDescription(product.getDescription());
+            dto.setCategoryName(product.getCategory().getName());
+            dto.setQuantiteStock(stock != null ? stock.getQuantiteDisponible() : 0); // ✅
+
+            return ResponseEntity.ok(dto); // ✅ On renvoie le DTO
+        }
+
+        return ResponseEntity.notFound().build();
     }
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")

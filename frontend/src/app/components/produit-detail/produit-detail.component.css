@@ -28,3 +28,9 @@
 .btn-retour:hover {
   background-color: #1e7e34;
 }
+
+.rupture-stock {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}

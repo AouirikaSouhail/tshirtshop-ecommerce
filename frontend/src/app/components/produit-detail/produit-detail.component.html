@@ -10,8 +10,18 @@ Cela évite une erreur d’affichage quand Angular charge la page mais que le pr
   <p><strong>Marque :</strong> {{ produit.brand }}</p>
   <p><strong>Prix :</strong> {{ produit.price }} €</p>
   <p><strong>Description :</strong> {{ produit.description }}</p>
-  
-  <button (click)="ajouterAuPanier()">➕ Ajouter au panier</button>
+  <p>🧮 Quantité en stock : {{ produit.quantiteStock }}</p>
+
+  <button 
+  (click)="ajouterAuPanier()" 
+  [disabled]="produit.quantiteStock <= 0">
+  ➕ Ajouter au panier
+  </button>
+
+  <div *ngIf="produit.quantiteStock <= 0" class="rupture-stock">
+     Ce produit est en rupture de stock.
+  </div>
+
 
   <a routerLink="/categories" class="btn-retour">⬅ Retour aux catégories</a>
 </div>

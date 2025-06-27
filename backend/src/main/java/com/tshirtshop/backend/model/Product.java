@@ -25,6 +25,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id") // Crée une colonne dans la base de données qui relie les produits à leur catégorie.
     private Category category;
+    // Cela crée une relation bidirectionnelle entre Produit et Stock.
+    @OneToOne(mappedBy = "produit", cascade = CascadeType.ALL)
+    private Stock stock;
 
     // Constructeur vide (requis par JPA)
     public Product() {}
