@@ -12,6 +12,7 @@ package com.tshirtshop.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;//Configurer la sécurité HTTP (HttpSecurity)
 import org.springframework.security.web.SecurityFilterChain; //  Gérer les autorisations et les règles d’accès (SecurityFilterChain)
@@ -36,7 +37,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.Customizer;
 
-
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 
 //Cette annotation marque la classe comme une source de configuration Spring. Elle sera analysée au démarrage.
 @Configuration // //  Dit à Spring : "Ceci est une classe de configuration"
@@ -77,8 +79,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/stripe/webhook").permitAll()
                         .requestMatchers(HttpMethod.GET, "/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // ✅ Autorisé sans être connecté
+                        .requestMatchers(HttpMethod.GET, "/api/test-mail").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/products/{id}").hasRole("ADMIN") // 🛡️ Accès réservé aux admins
                         .requestMatchers(HttpMethod.DELETE,"/products/{id}").hasRole("ADMIN") // 🛡️ Accès réservé aux admins
                         .requestMatchers(HttpMethod.POST,"/products/category/{categoryId}").hasRole("ADMIN") // 🛡️ Accès réservé aux admins

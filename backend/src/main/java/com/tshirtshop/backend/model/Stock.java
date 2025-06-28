@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Stock {
@@ -14,7 +15,6 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Lien avec un produit (1 produit = 1 stock)
     @OneToOne
     @JoinColumn(name = "produit_id", referencedColumnName = "id")
     private Product produit;

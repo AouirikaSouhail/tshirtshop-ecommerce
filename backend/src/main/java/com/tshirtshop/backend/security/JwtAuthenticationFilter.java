@@ -39,13 +39,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            userEmail = jwtUtil.extractEmail(jwt);
+
+            try {
+                userEmail = jwtUtil.extractEmail(jwt);
+            } catch (Exception e) {
+                // 🔒 Token invalide ou mal formé → ne bloque pas la requête
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userRepository.findByEmail(userEmail).orElse(null);
 
-            if (user != null && jwtUtil.isTokenValid(jwt, user.getEmail())) {
+            if (user != null && user.getRole() != null && !user.getRole().isEmpty()
+                    && jwtUtil.isTokenValid(jwt, user.getEmail())) {
+
                 List<SimpleGrantedAuthority> authorities =
                         List.of(new SimpleGrantedAuthority(user.getRole()));
 
@@ -54,17 +63,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-
-
         }
 
         filterChain.doFilter(request, response);
     }
 
-    // ✅ Cette méthode doit être en dehors de doFilterInternal, mais dans la classe
+    // ✅ Exclure les routes publiques (login et register) du filtre
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/api/login") || path.equals("/api/register");
+        return path.equals("/api/login") || path.equals("/api/register") || path.equals("/api/test-mail");
     }
 }

@@ -30,6 +30,15 @@ public class Order {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<OrderItem> items;
+
+    public double getTotalAmount() {
+        return total;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return items;
+    }
+
 }
 /**
  * La classe Order représente une commande passée par un utilisateur.

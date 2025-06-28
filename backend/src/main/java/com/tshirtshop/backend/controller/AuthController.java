@@ -3,12 +3,14 @@
  */
 package com.tshirtshop.backend.controller;
 
+
 import com.tshirtshop.backend.dto.LoginRequest; // Pour récupérer l’email et le mot de passe envoyés par le frontend.
 import com.tshirtshop.backend.dto.RegisterRequest; // pour l inscription et vérification email unique.
 import com.tshirtshop.backend.dto.UpdateUserRequest;
 import com.tshirtshop.backend.model.User; //  Pour manipuler les utilisateurs.
 import com.tshirtshop.backend.repository.UserRepository; //  pour interagir avec la base de données.
 import com.tshirtshop.backend.security.JwtUtil;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity; // pour envoyer des réponses personnalisées (200 OK, 400 BAD REQUEST, etc.).
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -60,7 +62,7 @@ public class AuthController{
      * @return ResponseEntity contenant soit l'objet utilisateur (connexion réussie),
      *         soit un message d'erreur (email non trouvé ou mot de passe incorrect).
      */
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         // Étape 1 : Récupérer l'utilisateur depuis la base
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
         if (optionalUser.isEmpty()) {
@@ -86,8 +88,13 @@ public class AuthController{
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("id", user.getId());
-        response.put("name", user.getName());
+        response.put("firstName", user.getFirstName());
+        response.put("lastName", user.getLastName());
+        response.put("adresse", user.getAdresse());
+        response.put("codePostal", user.getCodePostal());
+        response.put("ville", user.getVille());
         response.put("email", user.getEmail());
+
 
         // Si tout est bon → on renvoie l’objet User au frontend avec une réponse 200 (OK).
         // Attention, renvoyer l’objet User tel quel expose aussi le mot de passe.
@@ -98,17 +105,24 @@ public class AuthController{
 
 
     @PostMapping("/register")
-        public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) {
           // On vérifie si un utilisateur existe déjà avec cet email
           Optional<User> existingUser = userRepository.findByEmail(registerRequest.getEmail());
           if (existingUser.isPresent()) {
               return ResponseEntity.badRequest().body("Email déja utilisé.");
           }
           User newUser = new User();
-          newUser.setName(registerRequest.getName());
-          newUser.setEmail(registerRequest.getEmail());
+         newUser.setFirstName(registerRequest.getFirstName());
+         newUser.setLastName(registerRequest.getLastName());
+         newUser.setAdresse(registerRequest.getAdresse());
+         newUser.setCodePostal(registerRequest.getCodePostal());
+         newUser.setVille(registerRequest.getVille());
+         newUser.setEmail(registerRequest.getEmail());
           // Cela hachera le mot de passe avant de le sauvegarder en base. Rajout méthode passwordEncoder.encode()
           newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+        // ✅ Ajoute ce rôle par défaut si absent :
+        newUser.setRole("ROLE_USER");
 
           userRepository.save(newUser);
           return ResponseEntity.ok().body(Collections.singletonMap("message", "Inscription réussie."));
@@ -131,7 +145,7 @@ public class AuthController{
 
         @PutMapping("/user/{id}")
         //@PathVariable Long id signifie : « Prends le numéro dans l’URL et mets-le dans la variable id ».
-        public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
+        public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid  UpdateUserRequest updateUserRequest) {
         //On cherche en base si un utilisateur avec cet ID existe. Le résultat est un Optional<User>, qui peut être vide ou non.
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {
@@ -153,7 +167,12 @@ public class AuthController{
 
             }
             // Mise à jour après vérification
-            user.setName(updateUserRequest.getName());
+            user.setFirstName(updateUserRequest.getFirstName());
+            user.setLastName(updateUserRequest.getLastName());
+            user.setAdresse(updateUserRequest.getAdresse());
+            user.setCodePostal(updateUserRequest.getCodePostal());
+            user.setVille(updateUserRequest.getVille());
+
             user.setEmail(updateUserRequest.getEmail());
             user.setPassword(updateUserRequest.getPassword());
             userRepository.save(user);

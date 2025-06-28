@@ -24,8 +24,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Tu dis à Spring Boot : “Laisse la base de données générer l’id automatiquement (auto-incrément).”
     private Long id; // C’est le champ id, de type Long, qui va contenir le numéro unique de chaque utilisateur.
 
-    @Column(nullable = false) // Tu précises que ce champ ne peut pas être vide (= NOT NULL en SQL).
-    private String name;
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String adresse;
+
+    @Column(nullable = false)
+    private String codePostal;
+
+    @Column(nullable = false)
+    private String ville;
+
 
     @Column(nullable = false, unique = true) // le champ ne peut pas être vide et le champ doit être unique (ex. 2 personnes ne peuvent pas avoir le même email)
     private String email;
