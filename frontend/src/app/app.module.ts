@@ -18,7 +18,10 @@ import { ContactComponent } from './components/contact/contact.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { EditProductComponent } from './components/edit-product/edit-product.component';
 import { PanierComponent } from './components/panier/panier.component';
-import { CheckoutComponent } from './components/checkout/checkout.component'; // ← Bien placé
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component'; // ← Bien placé
+import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -36,13 +39,15 @@ import { CheckoutComponent } from './components/checkout/checkout.component'; //
     AddProductComponent,
     EditProductComponent,
     PanierComponent,
-    CheckoutComponent
+    CheckoutComponent,
+   ConfirmationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   providers: [
     {

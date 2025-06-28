@@ -19,6 +19,7 @@ import {AddProductComponent} from './components/add-product/add-product.componen
 import {EditProductComponent} from './components/edit-product/edit-product.component';
 import { PanierComponent } from './components/panier/panier.component';
 import {CheckoutComponent} from  './components/checkout/checkout.component';
+import {ConfirmationComponent} from './components/confirmation/confirmation.component'
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
 Chaque ligne dans ce tableau dit :
@@ -39,7 +40,8 @@ const routes: Routes = [
   { path: 'add-product', component: AddProductComponent },
   { path: 'edit-product/:id', component: EditProductComponent },
   { path: 'panier', component: PanierComponent },
-  { path: 'checkout', component: CheckoutComponent }
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'confirmation', component: ConfirmationComponent }
 
 
 
