@@ -1,52 +1,66 @@
-<h2>🛒 Mon Panier</h2>
+<h2 class="mb-4 text-center">
+  <i class="bi bi-cart-check-fill"></i> Mon panier
+</h2>
 
-<div *ngIf="produitsDansPanier.length === 0">
-  <p>Ton panier est vide pour le moment.</p>
+<!-- Si panier vide -->
+<div *ngIf="produitsDansPanier.length === 0" class="alert alert-secondary text-center">
+  Ton panier est vide pour le moment.
 </div>
 
-<table *ngIf="produitsDansPanier.length > 0" class="table">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Quantité</th>
-      <th>Prix unitaire</th>
-      <th>Total</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of produitsDansPanier">
-      <td>
-        <a [routerLink]="['/produit', item.produit.id]">
-          {{ item.produit.name }}
-        </a>
-      </td>
-      <td>
-        <button (click)="diminuer(item.produit.id)">➖</button>
-        {{ item.quantite }}
-        <button 
-          (click)="augmenter(item.produit.id)" 
-          [disabled]="item.quantite >= item.produit.quantiteStock">
-          ➕
-        </button>
-        <div *ngIf="item.quantite >= item.produit.quantiteStock" class="stock-max">
-          🔴 Stock maximum atteint
-        </div>
-      </td>
-      <td>{{ item.produit.price }} €</td>
-      <td>{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
-      <td>
-        <button (click)="supprimer(item.produit.id)">🗑️</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!-- Si panier contient des articles -->
+<div *ngIf="produitsDansPanier.length > 0" class="table-responsive">
+  <table class="table align-middle table-bordered">
+    <thead class="table-light text-center">
+      <tr>
+        <th>Produit</th>
+        <th>Qté</th>
+        <th>PU</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of produitsDansPanier">
+        <td>
+          <a [routerLink]="['/produit', item.produit.id]">{{ item.produit.name }}</a>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-outline-secondary btn-sm me-1" (click)="diminuer(item.produit.id)">
+            <i class="bi bi-dash"></i>
+          </button>
 
-<h3 *ngIf="produitsDansPanier.length > 0">
-  🧾 Total : {{ totalPanier | number:'1.2-2' }} €
-</h3>
+          {{ item.quantite }}
 
-<div *ngIf="produitsDansPanier.length > 0" class="btn-container">
-  <button (click)="validerCommande()">🏁 Passer au paiement</button>
-  <button (click)="payerAvecStripe()">💳 Payer avec Stripe</button>
+          <button class="btn btn-outline-secondary btn-sm ms-1"
+                  (click)="augmenter(item.produit.id)"
+                  [disabled]="item.quantite >= item.produit.quantiteStock">
+            <i class="bi bi-plus"></i>
+          </button>
+
+          <div *ngIf="item.quantite >= item.produit.quantiteStock"
+               class="badge bg-danger-subtle text-danger mt-1 d-block">
+            Stock max
+          </div>
+        </td>
+        <td class="text-end">{{ item.produit.price | number:'1.2-2' }} €</td>
+        <td class="text-end">{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
+        <td class="text-center">
+          <button class="btn btn-outline-danger btn-sm" (click)="supprimer(item.produit.id)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Total + bouton valider -->
+<div *ngIf="produitsDansPanier.length > 0" class="text-center mt-4">
+  <h4>Total : {{ totalPanier | number:'1.2-2' }} €</h4>
+
+  <div class="btn-container mt-3">
+    <button class="btn btn-success btn-lg px-4" (click)="validerCommande()">
+      🏁 Valider votre panier
+    </button>
+  </div>
 </div>

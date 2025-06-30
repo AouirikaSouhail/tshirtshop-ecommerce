@@ -64,14 +64,15 @@ export class PanierService {
   private sauvegarderDansLocalStorage(): void {
     localStorage.setItem('panier', JSON.stringify(this.items));
   }
-
+/** ancien fonctionnel !!!!!
+ 
   private chargerDepuisLocalStorage(): void {
     const data = localStorage.getItem('panier');
     if (data) {
       this.items = JSON.parse(data);
     }
   }
-
+*/
 augmenterQuantite(id: number): void {
   const item = this.items.find(p => p.produit.id === id);
   if (item) {
@@ -95,5 +96,31 @@ diminuerQuantite(id: number): void {
     this.supprimerProduit(id);
   }
 }
+
+// a ajouter fonctionnel !!!!
+getNombreTotalArticles(): number {
+  return this.items.reduce((total, item) => total + item.quantite, 0);
+}
+
+isVide(): boolean {
+  return this.items.length === 0;
+}
+
+aDesProduitsAvecStockInsuffisant(): boolean {
+  return this.items.some(item => item.quantite > item.produit.quantiteStock);
+}
+
+private chargerDepuisLocalStorage(): void {
+  try {
+    const data = localStorage.getItem('panier');
+    if (data) {
+      this.items = JSON.parse(data);
+    }
+  } catch (e) {
+    console.error('Erreur chargement panier depuis localStorage', e);
+    this.items = [];
+  }
+}
+//ajouter fonctionnel
 
 }
