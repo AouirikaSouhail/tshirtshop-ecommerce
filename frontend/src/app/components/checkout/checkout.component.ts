@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PanierService, PanierItem } from '../../services/panier.service';
 import { CommandeService } from '../../services/commande.service';
+import { AuthService } from '../../services/auth.service'; // à ajouter fonctionnel !!!!!
+import { HttpClient } from '@angular/common/http'; // à ajouter fonctionnel !!!!!
+import { loadStripe } from '@stripe/stripe-js';  // à ajouter fonctionnel !!!!!
+
+const stripePromise = loadStripe('pk_test_8uQoCKArz5IEtBxJMRas9BxG'); // à ajouter fonctionnel !!!!!
+
 
 @Component({
   selector: 'app-checkout',
@@ -18,7 +24,9 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private panierService: PanierService,
     private commandeService: CommandeService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService, // à ajouter fonctionnel !!!!!!
+    private http : HttpClient  // à ajouter fonctionnel !!!!!!
   ) {}
 
   ngOnInit(): void {
@@ -30,8 +38,34 @@ export class CheckoutComponent implements OnInit {
       this.router.navigate(['/categories']);
     }
   }
+  
+  payerAvecStripe(): void {
+  const email = localStorage.getItem('userEmail') || 'invite@tshirtshop.dev';
+  const items = this.items.map(i => ({
+    productName: i.produit.name,
+    quantity: i.quantite,
+    price: i.produit.price
+  }));
 
-  confirmer(): void {
+  const body = { email, items };
+
+  this.http.post<{ id: string }>(
+    'http://localhost:8080/api/stripe/create-checkout-session',
+    body
+  ).subscribe({
+    next: async (res) => {
+      const stripe = await stripePromise;
+      await stripe?.redirectToCheckout({ sessionId: res.id });
+    },
+    error: (err) => {
+      console.error('Échec Stripe :', err);
+      alert('Une erreur est survenue avec Stripe.');
+    }
+  });
+}
+
+ /**  Ajout pas fonctionnel !!!!!!
+confirmer(): void {
     this.commandeService.passerCommande(this.items).subscribe({
       next: () => {
         this.panierService.viderPanier();
@@ -44,4 +78,17 @@ export class CheckoutComponent implements OnInit {
       }
     });
   }
+   */
+
+  confirmer(): void {
+  if (!this.authService.isLoggedIn()) {
+    alert("Vous devez être connecté pour payer !");
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  // ➕ Stripe se lance ici si connecté
+  this.payerAvecStripe();
+}
+
 }
