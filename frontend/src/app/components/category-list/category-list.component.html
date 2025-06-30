@@ -1,17 +1,17 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-5">🛍️ Nos Catégories</h2>
 
-<h2>Liste des catégories</h2>
-
-<div *ngFor="let category of categories" class="categorie-card">
-    <a [routerLink]="['/categorie', category.id]">
-    <h3>{{category.name}}</h3>
-    <img [src]="category.imageUrl" alt="{{category.name}}" width="200">
-    </a>
+  <div class="row g-4">
+    <div *ngFor="let category of categories" class="col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100 shadow-sm border-0 categorie-card">
+        <a [routerLink]="['/categorie', category.id]" class="text-decoration-none text-dark">
+          <img [src]="category.imageUrl" [alt]="category.name" class="card-img-top img-fluid rounded-top" />
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ category.name }}</h5>
+            <button class="btn btn-outline-primary mt-2">Voir les produits</button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
-
-<!--
-Élément	                              Fonction
-*ngFor	                              Directive Angular pour faire une boucle
-"let category of categories"	      C’est du code Angular, pas du texte. Angular comprend et exécute la boucle
-categories	                          C’est une variable publique dans le fichier TypeScript. Le HTML y a accès automatiquement car ils sont liés dans le même composant
--->
-
