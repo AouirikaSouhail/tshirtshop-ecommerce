@@ -1,50 +1,35 @@
-<!--Affiche le titre avec le numéro de la catégorie dynamique (ex : « Produits de la catégorie 3 »).-->
-<h2>Produits de la catégorie {{idCategorie}}</h2>
+<h2 class="text-center my-4">Produits de la catégorie {{ idCategorie }}</h2>
 
 <!-- Bouton de retour -->
-<a routerLink="/categories" class="btn-retour">⬅ Retour aux catégories</a>
-<!--Message si aucun produit trouvé-->
+<a routerLink="/categories" class="btn btn-secondary ms-3 mb-3">⬅ Retour aux catégories</a>
+
+<!-- Message si aucun produit trouvé -->
 <div *ngIf="aucunProduit">
-    <p class="message-important">aucun produit pour cette catégorie.</p>
+  <p class="message-important">Aucun produit pour cette catégorie.</p>
 </div>
 
-<!--Liste des produits-->
-<!--Ce bloc ne s’affiche que si aucunProduit est false, c’est-à-dire si des produits existent.-->
 <!-- Bouton visible uniquement pour l'admin -->
 <div *ngIf="isAdmin" class="text-end me-4">
-  <a routerLink="/AddProduct" class="btn btn-success mb-3">➕ Ajouter un produit</a>
+  <a routerLink="/AddProduct" class="btn btn-success mb-4">➕ Ajouter un produit</a>
 </div>
 
+<!-- Liste des produits -->
 <div *ngIf="!aucunProduit" class="produit-container">
- <div *ngFor="let produit of produits" class="produit-card" [title]="produit.description">
-    <img [src]="produit.imageUrl" alt="{{produit.name}}" class="produit-image"> <!--ajout après [title]="produit.description-->
-    <h3>{{produit.name}}</h3>
-    <p><strong>Marque:</strong>{{produit.brand}}</p>
-    <p><strong>Prix :</strong>{{produit.price}} €</p>
+  <div *ngFor="let produit of produits" class="produit-card d-flex flex-column" [title]="produit.description">
+    <img [src]="produit.imageUrl" alt="{{produit.name}}" class="produit-image">
+    
+    <div class="produit-texte">
+      <h5 class="mt-3">{{ produit.name }}</h5>
+      <p><strong>Marque :</strong> {{ produit.brand }}</p>
+      <p><strong>Prix :</strong> {{ produit.price }} €</p>
+    </div>
+
     <a [routerLink]="['/produit', produit.id]">Voir les détails</a>
-    <!--Élément	                Signification
-    <a>	                        Une balise HTML classique de lien
-    [routerLink]	            Directive Angular spéciale pour changer de page sans recharger le site
-    ['/produit', produit.id]	Angular construit automatiquement /produit/5 si produit.id = 5
-    "Voir les détails"	        Texte cliquable visible à l’utilisateur-->
-    <br/>
-    <br/>
-    <!--  Bouton Modifier -->
-  <button [routerLink]="['/edit-product', produit.id]">✏️ Modifier</button>
-  <br/>
-    <br/>
-  <!--  Bouton Supprimer -->
-  <button (click)="deleteProduct(produit.id)">🗑️ Supprimer</button>
-  <button (click)="ajouterAuPanier(produit)">🛒 Ajouter au panier</button>
-  
 
- </div> 
+    <button [routerLink]="['/edit-product', produit.id]">✏️ Modifier</button>
+
+    <button (click)="deleteProduct(produit.id)">🗑️ Supprimer</button>
+
+    <button (click)="ajouterAuPanier(produit)">🛒 Ajouter au panier</button>
+  </div>
 </div>
-
-
-<!--- `{{ variable }}` : interpolation pour afficher une valeur.
-- `*ngIf="condition"` : directive pour afficher un bloc seulement si la condition est vraie.
-- `*ngFor="let item of liste"` : directive pour répéter un bloc pour chaque élément d’une liste.
-- `[src]="..."` et `[title]="..."` : liaison de propriété (binding Angular).
-
--->
