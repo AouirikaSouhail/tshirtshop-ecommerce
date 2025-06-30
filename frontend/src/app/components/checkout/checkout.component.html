@@ -23,7 +23,7 @@
   <option *ngFor="let m of modesPaiement" [value]="m">{{ m }}</option>
 </select>
 
-<br /><br />
-
-<button (click)="confirmer()">✅ Payer</button>
-<a routerLink="/panier">⬅ Retour au panier</a>
+<div class="actions">
+  <button (click)="confirmer()">✅ Payer</button>
+  <a routerLink="/panier">⬅ Retour au panier</a>
+</div>

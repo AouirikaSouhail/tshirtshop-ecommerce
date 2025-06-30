@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // ← Ajouté HTTP_INTERCEPTORS
+import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProduitListComponent } from './components/produit-list/produit-list.component';
 import { ProduitDetailComponent } from './components/produit-detail/produit-detail.component';
 import { LoginComponent } from './components/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { AuthInterceptor } from './auth.interceptor';
@@ -21,6 +22,7 @@ import { PanierComponent } from './components/panier/panier.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component'; // ← Bien placé
 import { CommonModule } from '@angular/common';
+import { MesCommandesComponent } from './components/mes-commandes/mes-commandes.component';
 
 
 @NgModule({
@@ -40,14 +42,17 @@ import { CommonModule } from '@angular/common';
     EditProductComponent,
     PanierComponent,
     CheckoutComponent,
-   ConfirmationComponent
+   ConfirmationComponent,
+   MesCommandesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule
   ],
   providers: [
     {

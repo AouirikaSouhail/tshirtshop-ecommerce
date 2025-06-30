@@ -1,8 +1,10 @@
 package com.tshirtshop.backend.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
-import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.tshirtshop.backend.service.MailService;
 import jakarta.mail.MessagingException;
@@ -10,12 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/stripe")
 public class StripeWebhookController {
+
+    private static final Logger logger = Logger.getLogger(StripeWebhookController.class.getName());
 
     @Value("${stripe.webhook.secret}")
     private String endpointSecret;
@@ -27,36 +30,45 @@ public class StripeWebhookController {
     }
 
     @PostMapping("/webhook")
-    public ResponseEntity<Map<String, String>> handleStripeWebhook(
-            @RequestHeader("Stripe-Signature") String sigHeader,
-            @RequestBody String payload) {
+    public ResponseEntity<String> handleStripeWebhook(
+            @RequestBody String payload,
+            @RequestHeader("Stripe-Signature") String sigHeader) {
 
         Event event;
 
         try {
             event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
-        } catch (SignatureVerificationException e) {
-            return ResponseEntity.badRequest().build();
-        }
+            logger.info("✅ Webhook reçu : " + event.getType());
 
-        if ("checkout.session.completed".equals(event.getType())) {
-            Session session = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
-            if (session != null) {
-                String clientEmail = session.getCustomerDetails().getEmail();
+            if ("checkout.session.completed".equals(event.getType())) {
+                JsonObject json = JsonParser.parseString(payload).getAsJsonObject();
+                JsonObject dataObject = json.getAsJsonObject("data").getAsJsonObject("object");
+                String email = dataObject.getAsJsonObject("customer_details").get("email").getAsString();
+                String sessionId = dataObject.get("id").getAsString();
+
+                logger.info("📧 Email Stripe détecté : " + email);
+                logger.info("🆔 ID Session : " + sessionId);
+
                 try {
                     mailService.envoyerConfirmationCommande(
-                            clientEmail,
+                            email,
                             "Confirmation de votre commande",
-                            "<h1>Merci pour votre achat !</h1><p>Votre commande a été reçue.</p>"
+                            "<h2>Merci pour votre achat !</h2><p>ID de commande : " + sessionId + "</p>"
                     );
+                    logger.info("✉️ E-mail envoyé !");
                 } catch (MessagingException e) {
-                    e.printStackTrace();
+                    logger.severe("❌ Erreur envoi email : " + e.getMessage());
                 }
             }
+
+        } catch (SignatureVerificationException e) {
+            logger.severe("❌ Signature Stripe invalide : " + e.getMessage());
+            return ResponseEntity.badRequest().body("Signature invalide");
+        } catch (Exception e) {
+            logger.severe("❌ Erreur webhook générale : " + e.getMessage());
+            return ResponseEntity.badRequest().body("Erreur");
         }
 
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "success");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok("Webhook traité");
     }
 }

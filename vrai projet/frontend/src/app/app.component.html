@@ -1,0 +1,36 @@
+<!--<router-outlet></router-outlet> est une balise spéciale Angular
+
+Elle dit à Angular : “affiche ici le composant lié à la route actuelle”
+
+C’est obligatoire si tu veux que le routing (/categories, /categorie/:id, etc.) fonctionne.
+
+Résultat attendu
+Maintenant :
+
+Aller sur /categories ➜ affiche CategoryListComponent
+
+Aller sur /categorie/2 ➜ affiche ProduitListComponent
+
+Redirection / ➜ vers /categories
+-->
+<div class="page-container">
+  <!--  Ton composant header Angular -->
+  <app-header></app-header>
+
+  <main class="main-content">
+    <!-- Ici, s'affiche dynamiquement la page actuelle -->
+    <router-outlet></router-outlet>
+  </main>
+
+ <footer class="footer">
+  <p>© 2025 TShirtShop. Tous droits réservés.</p>
+  <nav class="footer-links">
+    <a routerLink="/rgpd">RGPD</a>
+    <a routerLink="/conditions-generales">CGV</a>
+    <a routerLink="/contact">Contact</a>
+  </nav>
+</footer>
+</div>
+
+
+

@@ -18,7 +18,7 @@ styleUrls	Chemin vers le fichier CSS pour le style visuel */
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css'
+  styleUrls: ['./category-list.component.css']  // ← ici le "s" à "styleUrls"
 })
 
 /**export → permet d’utiliser cette classe ailleurs dans Angular.

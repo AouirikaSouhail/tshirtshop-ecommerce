@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="container">
+    <div class="left">
+     <h1 class="site-title">
+  <a [routerLink]="['/categories']">👕 TShirtShop</a>
+</h1>
+
+  <a class="nav-link" routerLink="/panier">🛒 Mon Panier</a>
+
+    </div>
+
+    <div class="right">
+      <!-- Si l'utilisateur est connecté -->
+      <ng-container *ngIf="isLoggedIn(); else guestLinks">
+        <span>Bienvenue, {{ userName }} !</span>
+        <button (click)="goToProfile()">Modifier Profil</button>
+        <button (click)="logout()">Déconnexion</button>
+      </ng-container>
+
+      <!-- Si l'utilisateur n'est PAS connecté -->
+      <ng-template #guestLinks>
+        <button (click)="router.navigate(['/login'])">Login</button>
+        <button (click)="router.navigate(['/register'])">Register</button>
+      </ng-template>
+    </div>
+  </div>
+</header>

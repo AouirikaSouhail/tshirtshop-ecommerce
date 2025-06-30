@@ -1,14 +1,14 @@
-<h2>Modifier un produit</h2>
+<h2>📝 Modifier un produit</h2>
 
 <form *ngIf="product" (ngSubmit)="updateProduct()">
   <label>Nom :</label>
   <input type="text" [(ngModel)]="product.name" name="name" required />
 
-  <label>Prix :</label>
+  <label>Prix (€) :</label>
   <input type="number" [(ngModel)]="product.price" name="price" required />
 
   <label>Description :</label>
-  <input type="text" [(ngModel)]="product.description" name="description" />
+  <textarea [(ngModel)]="product.description" name="description"></textarea>
 
   <label>URL de l'image :</label>
   <input type="text" [(ngModel)]="product.imageUrl" name="imageUrl" />
@@ -18,5 +18,6 @@
     <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
   </select>
 
-  <button type="submit">Mettre à jour</button>
+  <br /><br />
+  <button type="submit">💾 Mettre à jour</button>
 </form>

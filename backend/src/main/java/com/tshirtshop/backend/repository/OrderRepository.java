@@ -1,6 +1,17 @@
 package com.tshirtshop.backend.repository;
 
 import com.tshirtshop.backend.model.Order;
+import com.tshirtshop.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {}
+import java.util.List;
+
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long> {
+
+    List<Order> findByUser(User user);
+
+    List<Order> findByUserOrderByCreatedAtDesc(User user); // ✅ pour afficher les commandes triées par date
+
+}

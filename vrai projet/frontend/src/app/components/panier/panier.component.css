@@ -1,0 +1,14 @@
+.stock-max {
+  color: red;
+  font-weight: bold;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+}

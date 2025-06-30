@@ -1,30 +1,17 @@
-<!--Affiche simplement un titre visible au-dessus du formulaire. C’est purement décoratif pour informer l’utilisateur.-->
 <h2>Modifier mes informations</h2>
 
-<!--Ceci est un formulaire HTML classique adapté à Angular :
-(ngSubmit) est une directive d’événement Angular. Elle écoute l’événement submit du formulaire.
-Quand l’utilisateur clique sur le bouton Soumettre, Angular appelle la méthode onSubmit() définie dans le fichier .ts du composant.
--->
 <form (ngSubmit)="onSubmit()">
-    <!--Champ pour le nom-->
-    <label>Nom :</label>
-     <input type="text" [(ngModel)]="name" name="name" required/>
-      
-     <!--Champ pour l'email-->
-     <label>Email :</label>
-     <input type="email" [(ngModel)]="email" name="email" required/>
+  <label>Nom :</label>
+  <input type="text" [(ngModel)]="name" name="name" required />
 
-     <!--Champ pour le mot de passe-->
-     <label>Password :</label>
-     <input type="password" [(ngModel)]="password" name="password" required/>
-     
-     <!-- Bouton pour Soumettre le formulaire -->
-     <button type="submit">Sauvegarder</button>
+  <label>Email :</label>
+  <input type="email" [(ngModel)]="email" name="email" required />
+
+  <label>Password :</label>
+  <input type="password" [(ngModel)]="password" name="password" required />
+
+  <button type="submit">Sauvegarder</button>
 </form>
 
-<!--Deux paragraphes conditionnels :
-*ngIf="successMessage" : affiche le message en vert seulement si successMessage n’est pas vide.
-*ngIf="errorMessage" : affiche un message d’erreur en rouge si nécessaire.
-{{ ... }} = interpolation de données Angular : on affiche le contenu de la variable du fichier .ts.-->
-<p *ngIf="successMessage" style="color: green;">{{successMessage}}</p>
-<p *ngIf="errorMessage" style="color: red;">{{errorMessage}}</p>
+<p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+<p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>

@@ -1,13 +1,39 @@
-.header {
+.site-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
   background-color: #444;
   color: white;
   padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.site-title a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.5em;
+}
+
+.site-title a:hover {
+  color: #00bfff;
+}
+
+.nav-link {
+  margin-left: 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+  color: #00bfff;
 }
 
 button {
@@ -22,35 +48,4 @@ button {
 
 button:hover {
   background-color: #1976d2;
-}
-
-.header-container {
-  position: sticky; /* ou "fixed" pour vraiment figer */
-  top: 0;
-  z-index: 1000; /* au-dessus des autres éléments */
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.site-header {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: white; /* Ou une autre couleur */
-  padding: 10px 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Pour un effet de profondeur */
-}
-
-.site-title a {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
-
-.site-title a:hover {
-  color: #007BFF; /* Change de couleur au survol si tu veux */
 }

@@ -12,3 +12,9 @@ button {
   font-size: 18px;
   cursor: pointer;
 }
+
+.btn-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}

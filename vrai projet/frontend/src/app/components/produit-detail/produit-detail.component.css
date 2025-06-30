@@ -1,0 +1,36 @@
+.detail-container {
+  max-width: 600px;
+  margin: 30px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.detail-image {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.btn-retour {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 16px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-retour:hover {
+  background-color: #1e7e34;
+}
+
+.rupture-stock {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}

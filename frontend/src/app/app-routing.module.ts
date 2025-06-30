@@ -19,7 +19,9 @@ import {AddProductComponent} from './components/add-product/add-product.componen
 import {EditProductComponent} from './components/edit-product/edit-product.component';
 import { PanierComponent } from './components/panier/panier.component';
 import {CheckoutComponent} from  './components/checkout/checkout.component';
-import {ConfirmationComponent} from './components/confirmation/confirmation.component'
+import {ConfirmationComponent} from './components/confirmation/confirmation.component';
+import {MesCommandesComponent} from './components/mes-commandes/mes-commandes.component';
+
 /**
  *C’est comme si tu créais une carte GPS pour Angular.
 Chaque ligne dans ce tableau dit :

@@ -1,94 +1,121 @@
 package com.tshirtshop.backend.controller;
 
 import com.tshirtshop.backend.dto.CreateOrderRequest;
+import com.tshirtshop.backend.dto.OrderDTO;
+import com.tshirtshop.backend.dto.OrderItemDTO;
 import com.tshirtshop.backend.model.Order;
 import com.tshirtshop.backend.model.OrderItem;
+import com.tshirtshop.backend.model.User;
 import com.tshirtshop.backend.service.MailService;
 import com.tshirtshop.backend.service.OrderService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Contrôleur REST chargé de gérer les commandes.
- * – Créé une commande à partir du corps JSON envoyé par Angular.
- * – Envoie ensuite un e‑mail HTML de confirmation au client.
- * Les étapes 1️⃣ et 2️⃣ (création + e‑mail) sont clairement identifiées dans le code.
- */
+import java.util.List;
+
 @RestController
 @RequestMapping("/orders")
 @CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
 
     private final OrderService orderService;
+    private final MailService  mailService;
 
     @Autowired
-    private MailService mailService; // Service réutilisable pour l'envoi d'e‑mails
-
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService,
+                           MailService mailService) {
         this.orderService = orderService;
+        this.mailService  = mailService;
     }
 
+    /* ------------------------------------------------------------------ */
+    /*   1.  CRÉATION D’UNE COMMANDE + MAIL DE CONFIRMATION                */
+    /* ------------------------------------------------------------------ */
     @PostMapping
     public ResponseEntity<?> create(@RequestBody CreateOrderRequest request) {
         try {
-            // 1️⃣ Création et sauvegarde de la commande
+            /* 1️⃣  Création / sauvegarde */
             Order savedOrder = orderService.createOrder(request);
 
-            // 2️⃣ Construction du corps de l'e‑mail (HTML stylisé)
-            String adresseComplet = savedOrder.getUser().getAdresse() + ", "
-                    + savedOrder.getUser().getCodePostal() + " "
-                    + savedOrder.getUser().getVille();
-
-            StringBuilder msg = new StringBuilder();
-            msg.append("<div style='font-family: Arial, sans-serif; color: #333;'>")
-                    .append("<h2 style='color: #4CAF50;'>🧾 Confirmation de votre commande</h2>")
-                    .append("<p>Bonjour ").append(savedOrder.getUser().getFirstName()).append(",</p>")
-                    .append("<p>Merci pour votre commande sur <strong>TshirtShop</strong> !</p>")
-                    .append("<h3>Détails de la commande :</h3>")
-                    .append("<table style='width:100%; border-collapse: collapse;'>")
-                    .append("<tr><th style='border:1px solid #ddd;padding:8px;'>Produit</th><th style='border:1px solid #ddd;padding:8px;'>Quantité</th></tr>");
-
-            for (OrderItem item : savedOrder.getOrderItems()) {
-                msg.append("<tr>")
-                        .append("<td style='border:1px solid #ddd;padding:8px;'>")
-                        .append(item.getProduct().getName())
-                        .append("</td>")
-                        .append("<td style='border:1px solid #ddd;padding:8px;'>")
-                        .append(item.getQuantity())
-                        .append("</td>")
-                        .append("</tr>");
+            /* 2️⃣  Construction du mail HTML (très résumé) */
+            StringBuilder html = new StringBuilder()
+                    .append("<h2>🧾 Confirmation de commande</h2>")
+                    .append("<ul>");
+            for (OrderItem it : savedOrder.getOrderItems()) {
+                html.append("<li>")
+                        .append(it.getQuantity())
+                        .append(" × ")
+                        .append(it.getProduct().getName())
+                        .append("</li>");
             }
+            html.append("</ul>")
+                    .append("<p>Total : ")
+                    .append(String.format("%.2f €", savedOrder.getTotalAmount()))
+                    .append("</p>");
 
-            msg.append("</table>")
-                    .append("<p><strong>Total payé : ")
-                    .append(String.format("%.2f", savedOrder.getTotalAmount()))
-                    .append(" €</strong></p>")
-                    .append("<h3>Adresse de livraison :</h3>")
-                    .append("<p>").append(adresseComplet).append("</p>")
-                    .append("<p>Nous restons à votre disposition si vous avez des questions.</p>")
-                    .append("<p>🛍️ L’équipe TshirtShop</p>")
-                    .append("</div>");
-
-            // 3️⃣ Envoi de l'e‑mail (try/catch spécifique)
+            /* 3️⃣  Envoi du mail  */
             try {
                 mailService.envoyerConfirmationCommande(
                         savedOrder.getUser().getEmail(),
                         "Confirmation de votre commande",
-                        msg.toString()
-                );
+                        html.toString());
             } catch (MessagingException e) {
-                // Log de l'erreur : la commande est créée même si l'e‑mail échoue
-                System.err.println("Erreur d'envoi d’e‑mail : " + e.getMessage());
+                System.err.println("❌ Erreur d’envoi d’e-mail : " + e.getMessage());
             }
 
-            // 4️⃣ Réponse au frontend (commande créée avec succès)
+            /* 4️⃣  Retour au frontend */
             return ResponseEntity.ok(savedOrder);
 
         } catch (RuntimeException ex) {
-            // Erreur fonctionnelle (ex : stock insuffisant)
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*   2.  LISTE DES COMMANDES DE L’UTILISATEUR CONNECTÉ                */
+    /* ------------------------------------------------------------------ */
+    @GetMapping("/by-user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> listByLoggedUser(Authentication authentication) {
+
+        String email = authentication.getName();          // 🔐 e-mail du token JWT
+        User   user  = orderService.findUserByEmail(email);
+
+        if (user == null) {
+            return ResponseEntity.badRequest().body("Utilisateur non trouvé.");
+        }
+
+        List<Order> orders = orderService.findByUser(user);
+
+        List<OrderDTO> dtoList = orders.stream()
+                .map(this::toDto)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*   3.  Méthode utilitaire : entity ➜ DTO                            */
+    /* ------------------------------------------------------------------ */
+    private OrderDTO toDto(Order o) {
+        OrderDTO dto = new OrderDTO();
+        dto.setId(o.getId());
+        dto.setDateCommande(o.getCreatedAt());
+        dto.setTotal(o.getTotal());
+
+        List<OrderItemDTO> items = o.getItems().stream().map(it -> {
+            OrderItemDTO d = new OrderItemDTO();
+            d.setProductName(it.getProduct().getName());
+            d.setQuantity(it.getQuantity());
+            d.setPrice(it.getPriceUnitSnapshot());
+            return d;
+        }).toList();
+
+        dto.setItems(items);
+        return dto;
     }
 }

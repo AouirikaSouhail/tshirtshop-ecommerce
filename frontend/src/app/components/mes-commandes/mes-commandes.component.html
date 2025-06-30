@@ -1,0 +1,18 @@
+<h2>Mes Commandes</h2>
+
+<div *ngIf="commandes.length === 0">
+  <p>Vous n'avez encore passé aucune commande.</p>
+</div>
+
+<div *ngFor="let commande of commandes" class="commande">
+  <h3>Commande n°{{ commande.id }} du {{ commande.createdAt | date:'short' }}</h3>
+  <p>Total : {{ commande.total | currency:'EUR' }}</p>
+
+  <ul>
+    <li *ngFor="let item of commande.items">
+      {{ item.quantity }} × {{ item.productName }} à {{ item.priceUnitSnapshot | currency:'EUR' }}
+    </li>
+  </ul>
+
+  <hr>
+</div>

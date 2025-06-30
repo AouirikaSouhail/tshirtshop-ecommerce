@@ -19,7 +19,7 @@ public class MailService {
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(body, true); // true = HTML
-        helper.setFrom("testeafcuccle@gmail.com"); // même que spring.mail.username
+        helper.setFrom("testeafcuccle@gmail.com"); // doit être identique à spring.mail.username
 
         mailSender.send(message);
     }

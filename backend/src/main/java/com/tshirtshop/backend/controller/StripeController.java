@@ -5,6 +5,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.tshirtshop.backend.dto.CheckoutItemDTO;
+import com.tshirtshop.backend.dto.CheckoutRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,19 +27,20 @@ public class StripeController {
     }
 
     @PostMapping("/create-checkout-session")
-    public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody List<CheckoutItemDTO> items)
-            throws StripeException {
+    public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody CheckoutRequest request)
+
+    throws StripeException {
 
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 
-        for (CheckoutItemDTO item : items) {
+        for (CheckoutItemDTO item : request.getItems()) {
             lineItems.add(
                     SessionCreateParams.LineItem.builder()
                             .setQuantity((long) item.getQuantity())
                             .setPriceData(
                                     SessionCreateParams.LineItem.PriceData.builder()
                                             .setCurrency("eur")
-                                            .setUnitAmount((long) (item.getPrice() * 100)) // en centimes
+                                            .setUnitAmount((long) (item.getPrice() * 100))
                                             .setProductData(
                                                     SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                             .setName(item.getProductName())
@@ -49,6 +51,7 @@ public class StripeController {
 
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setCustomerEmail(request.getEmail()) // ✅ Très important pour lier l’email à la commande
                 .setSuccessUrl("http://localhost:4200/confirmation")
                 .setCancelUrl("http://localhost:4200/panier")
                 .addAllLineItem(lineItems)

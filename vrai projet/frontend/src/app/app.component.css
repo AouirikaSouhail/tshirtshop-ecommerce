@@ -1,0 +1,69 @@
+/* Structure globale */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff;
+}
+
+/* Conteneur principal */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.site-header {
+  background-color: #111;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  position: sticky; /* reste visible au scroll */
+  top: 0;
+  z-index: 1000;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* FOOTER */
+.footer {
+  background-color: #272424;
+  color: white;
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 16px; /* ← taille augmentée */
+  margin-top: 30px;
+  width: 100%;
+}
+
+.footer-links {
+  margin-top: 12px;
+}
+
+.footer-links a {
+  margin: 0 20px;
+  text-decoration: none;
+  color: #ccc;
+  font-weight: 600;
+  font-size: 18px; /* ← taille augmentée */
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: #007bff;
+}

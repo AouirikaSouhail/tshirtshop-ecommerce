@@ -1,0 +1,17 @@
+
+<h2>Liste des catégories</h2>
+
+<div *ngFor="let category of categories" class="categorie-card">
+    <a [routerLink]="['/categorie', category.id]">
+    <h3>{{category.name}}</h3>
+    <img [src]="category.imageUrl" alt="{{category.name}}" width="200">
+    </a>
+</div>
+
+<!--
+Élément	                              Fonction
+*ngFor	                              Directive Angular pour faire une boucle
+"let category of categories"	      C’est du code Angular, pas du texte. Angular comprend et exécute la boucle
+categories	                          C’est une variable publique dans le fichier TypeScript. Le HTML y a accès automatiquement car ils sont liés dans le même composant
+-->
+

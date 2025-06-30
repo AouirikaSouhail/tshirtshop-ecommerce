@@ -1,0 +1,35 @@
+<!-- Affiche un titre en haut de la page : “Connexion”. -->
+<h2>Connexion</h2>
+<!--  Démarre un formulaire HTML.(ngSubmit)="onSubmit()" est une directive Angular spéciale :
+Elle déclenche la méthode onSubmit() (dans le fichier login.component.ts) quand l’utilisateur envoie le formulaire
+(clic sur le bouton ou touche Entrée dans un champ).Cela évite le rechargement de page classique et garde tout en Angular
+ (single page app).-->
+<form (ngSubmit) = "onSubmit()">
+    <!-- Bloc pour le champ d’e-mail. Le label permet d’indiquer à l’utilisateur ce que le champ représente.-->
+     <!-- <input> = champ où l’utilisateur écrit. type="email" = force le navigateur à exiger un format "email" (avec un @).
+     [(ngModel)]="email" = liaison bidirectionnelle : Le champ est lié à la variable email dans le fichier .ts.
+     Si l’utilisateur tape un e-mail, la variable this.email est mise à jour.
+    Si this.email change dans le code TypeScript, le champ se met à jour aussi.
+    name="email" = obligatoire pour que ngModel fonctionne correctement dans un formulaire.
+    Required = ce champ doit être rempli pour que le formulaire soit valide.-->
+    <div>
+        <label>Email: </label>
+        <input type="email" [(ngModel)]="email" name="email" required />
+    </div>
+   
+    <!--Bloc avec la même logique que Email-->
+    <div>
+        <label>Password: </label>
+        <input type="password" [(ngModel)]="password" name="password" required />
+    </div>
+ 
+    <button type="submit">Se connecter</button>
+</form>
+
+<p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+<!--“Afficher ce paragraphe seulement si errorMessage n’est pas vide ou null.” -->
+<p *ngIf="errorMessage" style="color: red;">{{errorMessage}}</p>
+
+<!--Paragraphe conditionnel : *ngIf="errorMessage" = s'affiche uniquement si errorMessage n’est pas vide.
+                               style="color: red;" = texte en rouge.
+                               {{ errorMessage }} = interpolation → affiche le contenu de la variable dans le HTML.-->

@@ -1,0 +1,47 @@
+<!--Affiche un titre sur la page.-->
+<h2>Créer un compte</h2>
+
+<!-- form est la balise HTML classique pour un formulaire.(ngSubmit)="onSubmit()" est une directive Angular événementielle :
+Elle dit : “Quand le formulaire est validé (submit), exécute la méthode onSubmit() du fichier TypeScript.”
+Cela évite le rechargement de page classique (comme en PHP).-->
+<form (ngSubmit)="onSubmit()">
+
+   <!-- Champ de saisie pour le prénom. -->
+   <label>Prénom :</label>
+   <input type="text" [(ngModel)]="firstName" name="firstName" required/>
+
+   <!-- Champ de saisie pour le nom. -->
+   <label>Nom :</label>
+   <input type="text" [(ngModel)]="lastName" name="lastName" required/>
+
+   <!-- Champ de saisie pour l'adresse postale. -->
+   <label>Adresse :</label>
+   <input type="text" [(ngModel)]="adresse" name="adresse" required/>
+
+   <!-- Champ de saisie pour le code postal. -->
+   <label>Code postal :</label>
+   <input type="text" [(ngModel)]="codePostal" name="codePostal" required/>
+
+   <!-- Champ de saisie pour la ville. -->
+   <label>Ville :</label>
+   <input type="text" [(ngModel)]="ville" name="ville" required/>
+
+   <!-- Champ de saisie pour l’email, avec les mêmes règles que ci-dessus.-->
+   <label>Email :</label>
+   <input type="email" [(ngModel)]="email" name="email" required/>
+
+   <!-- Champ de saisie pour le password, avec les mêmes règles que ci-dessus.-->
+   <label>Password :</label>
+   <input type="password" [(ngModel)]="password" name="password" required/>
+
+   <!-- Bouton qui déclenche le (ngSubmit) du <form> quand on clique dessus.
+   Il envoie les données uniquement si tous les champs sont valides (grâce à required).-->
+   <button type="submit">S’inscrire</button>
+</form>
+
+<!-- Deux paragraphes conditionnels :
+*ngIf="errorMessage" : n’affiche ce paragraphe que si errorMessage contient une chaîne non vide.
+Affiche le message d’erreur en rouge. *ngIf="successMessage" : pareil pour les messages de succès (en vert).
+Ces variables viennent du register.component.ts.-->
+<p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+<p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>

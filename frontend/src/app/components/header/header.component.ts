@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   userName: string | null = '';
 
   constructor(public router: Router) {}
@@ -16,11 +16,11 @@ export class HeaderComponent {
   }
 
   goToProfile(): void {
-  const userId = localStorage.getItem('userId'); // tu avais sauvegardé ça après le login
-  if (userId) {
-    this.router.navigate([`/profile-edit/${userId}`]);
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.router.navigate([`/profile-edit/${userId}`]);
+    }
   }
-}
 
   logout(): void {
     localStorage.clear();

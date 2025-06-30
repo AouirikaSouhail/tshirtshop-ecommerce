@@ -2,8 +2,35 @@
   text-align: center;
   margin-top: 50px;
   padding: 20px;
+  background-color: #f3fdf4;
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
+
 .confirmation h2 {
-  color: green;
+  color: #2e7d32;
   font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.confirmation p {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.home-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.home-link:hover {
+  text-decoration: underline;
 }
