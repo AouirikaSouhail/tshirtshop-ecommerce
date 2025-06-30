@@ -33,6 +33,9 @@ export class AddProductComponent implements OnInit {
   }
 
   addProduct(): void {
+      const form = document.querySelector('form') as HTMLFormElement;
+  form.classList.add('was-validated');
+
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Vous devez être connecté en tant qu’administrateur.');

@@ -10,6 +10,11 @@
 
 <!--Liste des produits-->
 <!--Ce bloc ne s’affiche que si aucunProduit est false, c’est-à-dire si des produits existent.-->
+<!-- Bouton visible uniquement pour l'admin -->
+<div *ngIf="isAdmin" class="text-end me-4">
+  <a routerLink="/AddProduct" class="btn btn-success mb-3">➕ Ajouter un produit</a>
+</div>
+
 <div *ngIf="!aucunProduit" class="produit-container">
  <div *ngFor="let produit of produits" class="produit-card" [title]="produit.description">
     <img [src]="produit.imageUrl" alt="{{produit.name}}" class="produit-image"> <!--ajout après [title]="produit.description-->
@@ -31,6 +36,7 @@
   <!--  Bouton Supprimer -->
   <button (click)="deleteProduct(produit.id)">🗑️ Supprimer</button>
   <button (click)="ajouterAuPanier(produit)">🛒 Ajouter au panier</button>
+  
 
  </div> 
 </div>

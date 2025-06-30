@@ -13,6 +13,8 @@ export class ProduitListComponent implements OnInit {
   produits: Produit[] = [];
   idCategorie!: number;
   aucunProduit = false;
+  isAdmin = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -21,6 +23,11 @@ export class ProduitListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+if (token) {
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  this.isAdmin = payload.role === 'ROLE_ADMIN';
+}
     this.route.paramMap.subscribe(params => {
       this.idCategorie = Number(params.get('id'));
       this.produitService.getProduitsParCategorie(this.idCategorie).subscribe({
@@ -34,6 +41,9 @@ export class ProduitListComponent implements OnInit {
         }
       });
     });
+
+    
+
   }
 
   deleteProduct(id: number): void {
@@ -49,3 +59,4 @@ export class ProduitListComponent implements OnInit {
     alert(`Produit "${produit.name}" ajouté au panier !`);
   }
 }
+

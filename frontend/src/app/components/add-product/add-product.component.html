@@ -1,17 +1,82 @@
-<h2>🆕 Ajouter un produit</h2>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
 
-<form (ngSubmit)="addProduct()" #form="ngForm">
-  <input type="text" [(ngModel)]="product.name" name="name" placeholder="Nom du produit" required />
-  <input type="number" [(ngModel)]="product.price" name="price" placeholder="Prix (€)" required />
-  <input type="text" [(ngModel)]="product.description" name="description" placeholder="Description" />
-  <input type="text" [(ngModel)]="product.imageUrl" name="imageUrl" placeholder="URL de l’image" />
+      <h2 class="text-center text-uppercase fw-bold mb-4">Ajouter un produit</h2>
 
-  <select [(ngModel)]="product.categoryId" name="categoryId" required>
-    <option value="" disabled selected hidden>-- Choisir une catégorie --</option>
-    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
-  </select>
+      <form (ngSubmit)="addProduct()" #form="ngForm" class="needs-validation" novalidate>
 
-  <button type="submit" [disabled]="form.invalid">✅ Ajouter le produit</button>
-</form>
+        <!-- Nom -->
+        <div class="form-group mb-3">
+          <label class="form-label">Nom du produit</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="product.name"
+            name="name"
+            required />
+          <div class="invalid-feedback">Le nom est obligatoire.</div>
+        </div>
 
-<a routerLink="/">⬅ Retour à l’accueil</a>
+        <!-- Prix -->
+        <div class="form-group mb-3">
+          <label class="form-label">Prix (€)</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="product.price"
+            name="price"
+            required />
+          <div class="invalid-feedback">Indique un prix valide.</div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mb-3">
+          <label class="form-label">Description</label>
+          <textarea
+            rows="3"
+            class="form-control"
+            [(ngModel)]="product.description"
+            name="description">
+          </textarea>
+        </div>
+
+        <!-- Image -->
+        <div class="form-group mb-3">
+          <label class="form-label">URL de l’image</label>
+          <input
+            type="url"
+            class="form-control"
+            [(ngModel)]="product.imageUrl"
+            name="imageUrl" />
+        </div>
+
+        <!-- Catégorie -->
+        <div class="form-group mb-4">
+          <label class="form-label">Catégorie</label>
+          <select
+            class="form-select"
+            [(ngModel)]="product.categoryId"
+            name="categoryId"
+            required>
+            <option value="" disabled selected hidden>-- Choisir une catégorie --</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+          <div class="invalid-feedback">Choisis une catégorie.</div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="d-grid gap-2">
+          <button
+            type="submit"
+            class="btn btn-dark text-uppercase"
+            [disabled]="form.invalid">
+            ✅ Ajouter le produit
+          </button>
+          <a routerLink="/" class="btn btn-outline-secondary">⬅ Retour à l’accueil</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
