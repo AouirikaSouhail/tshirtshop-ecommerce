@@ -1,25 +1,26 @@
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+/* rien d’obligatoire, mais voici de petits ajustements */
+
+table td:first-child {                 /* nom du produit */
+  min-width: 160px;
+  word-break: break-word;
 }
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+
+@media (max-width: 575.98px) {         /* mobile */
+  h2 { font-size: 1.35rem; }
+  h4 { font-size: 1.1rem; }
 }
-.actions {
-  margin-top: 20px;
-}
-button {
-  background-color: #28a745;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
-}
-button:hover {
-  background-color: #218838;
+
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+  }
 }

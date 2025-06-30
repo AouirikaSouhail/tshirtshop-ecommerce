@@ -1,29 +1,66 @@
-<h2>🧾 Récapitulatif de la commande</h2>
+<div class="container my-5">
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Produit</th><th>Qté</th><th>PU</th><th>Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of items">
-      <td>{{ item.produit.name }}</td>
-      <td>{{ item.quantite }}</td>
-      <td>{{ item.produit.price | number:'1.2-2' }} €</td>
-      <td>{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
-    </tr>
-  </tbody>
-</table>
+  <h2 class="mb-4 text-center">
+    🧾 Récapitulatif de la commande
+  </h2>
 
-<h3>Total : {{ total | number:'1.2-2' }} €</h3>
+  <!-- Tableau responsive -->
+  <div class="table-responsive">
+    <table class="table table-sm align-middle text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Produit</th>
+          <th>Qté</th>
+          <th>PU</th>
+          <th>Total</th>
+        </tr>
+      </thead>
 
-<label>Mode de paiement :</label>
-<select [(ngModel)]="modeSelectionne">
-  <option *ngFor="let m of modesPaiement" [value]="m">{{ m }}</option>
-</select>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td class="text-start">{{ item.produit.name }}</td>
+          <td>{{ item.quantite }}</td>
+          <td>{{ item.produit.price | number:'1.2-2' }} €</td>
+          <td>{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<div class="actions">
-  <button (click)="confirmer()">✅ Payer</button>
-  <a routerLink="/panier">⬅ Retour au panier</a>
+  <!-- Total général -->
+  <h4 class="text-end my-3">
+    Total&nbsp;: <strong>{{ total | number:'1.2-2' }} €</strong>
+  </h4>
+
+  <!-- Choix du mode de paiement -->
+  <div class="row g-3 align-items-center mb-4">
+    <div class="col-auto">
+      <label class="col-form-label fw-semibold"
+             for="modePay">Mode de paiement :</label>
+    </div>
+
+    <div class="col-sm-4">
+      <select id="modePay"
+              class="form-select"
+              [(ngModel)]="modeSelectionne">
+        <option *ngFor="let m of modesPaiement" [value]="m">
+          {{ m }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="d-flex flex-column flex-sm-row gap-2">
+    <button type="button"
+            class="btn btn-success flex-fill"
+            (click)="confirmer()">
+      ✅ Payer
+    </button>
+
+    <a routerLink="/panier"
+       class="btn btn-outline-secondary flex-fill">
+      ⬅ Retour au panier
+    </a>
+  </div>
 </div>

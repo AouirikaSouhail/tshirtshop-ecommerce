@@ -1,27 +1,42 @@
-<!--Affiche ce div seulement si la variable produit existe et n’est pas null ou undefined »
+<!-- affichage conditionnel inchangé -->
+<div *ngIf="produit" class="container my-5">
 
-Cela évite une erreur d’affichage quand Angular charge la page mais que le produit n’a pas encore été reçu du backend-->
+  <div class="row justify-content-center">
+    <!-- Image -->
+    <div class="col-12 col-md-5 text-center mb-4 mb-md-0">
+      <img [src]="produit.imageUrl"
+           [alt]="produit.name"
+           class="img-fluid detail-image shadow-sm" />
+    </div>
 
-<div class="detail-container" *ngIf="produit">
-  <h2>{{ produit.name }}</h2>
+    <!-- Texte -->
+    <div class="col-12 col-md-5 d-flex flex-column gap-2">
 
-  <img [src]="produit.imageUrl" alt="{{ produit.name }}" class="detail-image" />
+      <h2 class="fw-bold">{{ produit.name }}</h2>
 
-  <p><strong>Marque :</strong> {{ produit.brand }}</p>
-  <p><strong>Prix :</strong> {{ produit.price }} €</p>
-  <p><strong>Description :</strong> {{ produit.description }}</p>
-  <p>🧮 Quantité en stock : {{ produit.quantiteStock }}</p>
+      <p class="mb-1"><strong>Marque&nbsp;:</strong> {{ produit.brand }}</p>
+      <p class="mb-1 fs-5 text-primary"><strong>Prix&nbsp;:</strong> {{ produit.price | number:'1.2-2' }} €</p>
+      <p class="small text-muted">{{ produit.description }}</p>
 
-  <button 
-  (click)="ajouterAuPanier()" 
-  [disabled]="produit.quantiteStock <= 0">
-  ➕ Ajouter au panier
-  </button>
+      <span
+        [ngClass]="produit.quantiteStock > 0 ? 'badge bg-success' : 'badge bg-danger'">
+        {{ produit.quantiteStock > 0 ? 'En stock : ' + produit.quantiteStock : 'Rupture de stock' }}
+      </span>
 
-  <div *ngIf="produit.quantiteStock <= 0" class="rupture-stock">
-     Ce produit est en rupture de stock.
+      <!-- Boutons -->
+      <div class="d-flex flex-column flex-sm-row gap-3 mt-3">
+        <button class="btn btn-primary flex-grow-1"
+                (click)="ajouterAuPanier()"
+                [disabled]="produit.quantiteStock <= 0">
+          ➕ Ajouter au panier
+        </button>
+
+        <a routerLink="/categories" class="btn btn-outline-secondary flex-grow-1">
+          ⬅️ Retour
+        </a>
+      </div>
+
+    </div>
   </div>
 
-
-  <a routerLink="/categories" class="btn-retour">⬅ Retour aux catégories</a>
 </div>

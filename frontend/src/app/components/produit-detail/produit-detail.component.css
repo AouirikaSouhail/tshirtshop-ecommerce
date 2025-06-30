@@ -1,36 +1,25 @@
-.detail-container {
-  max-width: 600px;
-  margin: 30px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
+/* conteneur blanc + ombre douce */
+.container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.05);
+  padding: 2rem 1.5rem;
 }
 
+/* image toujours proportionnée ; max-height pour éviter l’étirement */
 .detail-image {
-  width: 100%;
-  max-width: 300px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  max-height: 380px;
+  object-fit: contain;      /* garde les proportions sans crop */
+  border-radius: 8px;
 }
 
-.btn-retour {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 16px;
-  background-color: #28a745;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
+/* badge */
+.badge {
+  font-size: .9rem;
+  padding: .55em .75em;
 }
 
-.btn-retour:hover {
-  background-color: #1e7e34;
-}
-
-.rupture-stock {
-  color: red;
-  margin-top: 10px;
-  font-weight: bold;
+/* petits ajustements sur mobile */
+@media (max-width: 575.98px) {
+  h2 { font-size: 1.35rem; }
 }
