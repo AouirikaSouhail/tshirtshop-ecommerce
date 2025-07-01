@@ -24,28 +24,35 @@
         <td>
           <a [routerLink]="['/produit', item.produit.id]">{{ item.produit.name }}</a>
         </td>
+
         <td class="text-center">
-          <button class="btn btn-outline-secondary btn-sm me-1" (click)="diminuer(item.produit.id)">
-            <i class="bi bi-dash"></i>
-          </button>
+          <div class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-outline-secondary btn-sm btn-quantity me-1"
+                    (click)="diminuer(item.produit.id)">
+              <i class="bi bi-dash"></i>
+            </button>
 
-          {{ item.quantite }}
+            <span class="mx-1 fw-bold">{{ item.quantite }}</span>
 
-          <button class="btn btn-outline-secondary btn-sm ms-1"
-                  (click)="augmenter(item.produit.id)"
-                  [disabled]="item.quantite >= item.produit.quantiteStock">
-            <i class="bi bi-plus"></i>
-          </button>
+            <button class="btn btn-outline-secondary btn-sm btn-quantity ms-1"
+                    (click)="augmenter(item.produit.id)"
+                    [disabled]="item.quantite >= item.produit.quantiteStock">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
 
           <div *ngIf="item.quantite >= item.produit.quantiteStock"
-               class="badge bg-danger-subtle text-danger mt-1 d-block">
+               class="stock-max badge bg-danger-subtle text-danger mt-1 d-block">
             Stock max
           </div>
         </td>
+
         <td class="text-end">{{ item.produit.price | number:'1.2-2' }} €</td>
         <td class="text-end">{{ item.produit.price * item.quantite | number:'1.2-2' }} €</td>
+
         <td class="text-center">
-          <button class="btn btn-outline-danger btn-sm" (click)="supprimer(item.produit.id)">
+          <button class="btn btn-outline-danger btn-sm btn-quantity"
+                  (click)="supprimer(item.produit.id)">
             <i class="bi bi-trash"></i>
           </button>
         </td>

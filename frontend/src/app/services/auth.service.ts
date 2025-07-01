@@ -24,10 +24,13 @@ export class AuthService {
   }
 
   logout(): void {
-  localStorage.clear();
-  this.isLoggedInSubject.next(false);
-  this.userNameSubject.next('');
-}
+    localStorage.clear();
+    this.isLoggedInSubject.next(false);
+    this.userNameSubject.next('');
+    this.panierService.viderPanier();
+    this.router.navigate(['/login']);
+  }
+
   // Utile pour les composants qui ne réagissent pas avec des observables
   getUserName(): string {
     return localStorage.getItem('userName') || '';

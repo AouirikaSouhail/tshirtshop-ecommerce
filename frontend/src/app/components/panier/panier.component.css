@@ -18,3 +18,104 @@ button {
   display: flex;
   gap: 10px;
 }
+
+
+/* Style général du tableau */
+table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Icônes de quantité */
+.btn-quantity {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+/* Bouton + et - */
+.btn-outline-secondary:hover {
+  background-color: #dee2e6;
+}
+
+/* Bouton supprimer (corbeille) */
+.btn-outline-danger:hover {
+  background-color: #f8d7da;
+}
+
+/* Message "Stock max" */
+.stock-max {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Style du bouton de validation */
+.btn-container .btn-success {
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.btn-container .btn-success:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+
+/* Responsive table */
+@media (max-width: 576px) {
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+
+  .btn-quantity {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+
+.btn-quantity {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.btn-quantity:hover {
+  background-color: #e2e6ea;
+}
+
+.stock-max {
+  color: #dc3545;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.btn-outline-danger:hover {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.btn-container .btn-success {
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-container .btn-success:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+
