@@ -26,9 +26,9 @@
 
     <a [routerLink]="['/produit', produit.id]">Voir les détails</a>
 
-    <button [routerLink]="['/edit-product', produit.id]">✏️ Modifier</button>
+    <button *ngIf="isAdmin" [routerLink]="['/edit-product', produit.id]">✏️ Modifier</button>
 
-    <button (click)="deleteProduct(produit.id)">🗑️ Supprimer</button>
+    <button *ngIf="isAdmin" (click)="deleteProduct(produit.id)">🗑️ Supprimer</button>
 
     <button (click)="ajouterAuPanier(produit)">🛒 Ajouter au panier</button>
   </div>
