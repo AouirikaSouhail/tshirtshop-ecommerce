@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-
+// header.component.ts
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PanierService } from '../../services/panier.service';
 import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,47 +11,44 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
-  isLoggedIn = false;
-  userName: string | null = null;
-  nbArticles = 0;
-
-  private subs: Subscription[] = [];
+  nbArticles: number = 0;
+  isLoggedIn: boolean = false;
+  userName: string = '';
+  private subscriptions: Subscription[] = [];
 
   constructor(
-    private router: Router,
     private panierService: PanierService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.isLoggedIn();
-    this.userName = localStorage.getItem('userName');
-    this.nbArticles = this.panierService.getNombreTotalArticles();
-
-    this.subs.push(
-      this.panierService.itemsChanged$.subscribe(() => {
-        this.nbArticles = this.panierService.getNombreTotalArticles();
+    this.subscriptions.push(
+      this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status),
+      this.authService.userName$.subscribe(name => this.userName = name),
+      this.panierService.itemsChanged$.subscribe(items => {
+        this.nbArticles = items.reduce((total, item) => total + item.quantite, 0);
       })
     );
+
+    this.nbArticles = this.panierService.getNombreTotalArticles();
   }
 
-  goToProfile(): void {
+logout(): void {
+  this.authService.logout();            // mise à jour du statut connecté/déconnecté
+  this.panierService.viderPanier();     // vider le panier
+  this.router.navigate(['/login']);     // rediriger vers la page de login
+}
+  
+    goToProfile(): void {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.router.navigate([`/profile-edit/${userId}`]);
+    } else {
+      this.router.navigate(['/login']);
     }
   }
-
-  logout(): void {
-    this.panierService.viderPanier();
-    this.authService.logout();
-    this.isLoggedIn = false;
-    this.userName = null;
-    this.nbArticles = 0;
-  }
-
   ngOnDestroy(): void {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 }

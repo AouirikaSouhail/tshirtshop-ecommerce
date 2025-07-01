@@ -1,47 +1,43 @@
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
-import { Router }     from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-
-import { PanierService }   from './panier.service';
-
-@Injectable({ providedIn: 'root' })
+import { PanierService } from './panier.service';
+import { Route, Router } from '@angular/router';
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
-  /** ───────── État interne sous forme de BehaviorSubject ───────── */
-  private isLoggedInSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
-  private userNameSubject   = new BehaviorSubject<string | null>(localStorage.getItem('userName'));
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  /** Observables publiques (si un composant veut écouter) */
-  readonly isLoggedIn$ = this.isLoggedInSubject.asObservable();
-  readonly userName$   = this.userNameSubject.asObservable();
+  private userNameSubject = new BehaviorSubject<string>(this.getUserNameFromStorage());
+  userName$ = this.userNameSubject.asObservable();
 
-  constructor(
-    private router: Router,
-    private panierService: PanierService
-  ) {}
+  constructor(private panierService : PanierService, private router : Router){}
 
-  /** -------- API conservée (on ne change PAS le nom) -------- */
-  isLoggedIn(): boolean {
-    return this.isLoggedInSubject.value;
-  }
-
-  /** Appelée depuis le login : enregistre et propage l’état */
   login(token: string, userName: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('userName', userName);
-
     this.isLoggedInSubject.next(true);
     this.userNameSubject.next(userName);
   }
 
-  /** Appelée depuis le header ou ailleurs */
   logout(): void {
-    localStorage.clear();                     // vide tout le LS
-    this.panierService.viderPanier();         // vide le panier
+  localStorage.clear();
+  this.isLoggedInSubject.next(false);
+  this.userNameSubject.next('');
+}
+  // Utile pour les composants qui ne réagissent pas avec des observables
+  getUserName(): string {
+    return localStorage.getItem('userName') || '';
+  }
 
-    this.isLoggedInSubject.next(false);       // propage déconnexion
-    this.userNameSubject.next(null);
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
 
-    this.router.navigate(['/login']);
+  private getUserNameFromStorage(): string {
+    return localStorage.getItem('userName') || '';
   }
 }

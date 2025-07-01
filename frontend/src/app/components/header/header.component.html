@@ -4,14 +4,23 @@
   </a>
 
   <nav class="nav-links">
-    <a routerLink="/categories"><i class="fas fa-home"></i> Accueil</a>
-    <a routerLink="/panier"><i class="fas fa-shopping-basket"></i> Mon Panier ({{ nbArticles }})</a>
-    <a *ngIf="isLoggedIn" routerLink="/MesCommandes"><i class="fas fa-box-open"></i> Commandes</a>
+    <a routerLink="/categories">
+      <i class="fas fa-home"></i> Accueil
+    </a>
+
+    <a routerLink="/panier">
+      <i class="fas fa-shopping-cart"></i>
+      <span *ngIf="nbArticles > 0">({{ nbArticles }})</span>
+    </a>
+
+    <a *ngIf="isLoggedIn" routerLink="/MesCommandes">
+      <i class="fas fa-box-open"></i> Commandes
+    </a>
   </nav>
 
   <div class="header-right" *ngIf="isLoggedIn; else authLinks">
     <span class="welcome">Bienvenue, {{ userName || 'Utilisateur' }} !</span>
-    <button class="header-button" (click)="goToProfile()">Modifier Profil</button>
+    <button class="header-button" (click)="goToProfile()">Profil</button>
     <button class="header-button" (click)="logout()">Déconnexion</button>
   </div>
 

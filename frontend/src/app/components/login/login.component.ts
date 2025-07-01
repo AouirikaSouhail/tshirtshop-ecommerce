@@ -30,6 +30,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     const loginData = { email: this.email, password: this.password };
+    
 
     this.http.post<LoginResponse>('http://localhost:8080/api/login', loginData)
       .subscribe({
@@ -45,7 +46,7 @@ export class LoginComponent {
         localStorage.setItem('userAdresse', res.adresse);
         localStorage.setItem('userCP',      res.codePostal);
         localStorage.setItem('userVille',   res.ville);
-
+       
 
           this.successMessage = 'Connexion réussie ✅';
           setTimeout(() => this.router.navigate(['/categories']), 2000);
