@@ -75,7 +75,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/stripe/webhook").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/stripe/create-checkout-session").permitAll() // 🆕 Paiement Stripe
                         .requestMatchers(HttpMethod.POST, "/api/test-mail").permitAll() // 🆕 test d’envoi d’e-mail
-                        .requestMatchers(HttpMethod.GET,  "/categories").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/categories/**").permitAll()
                         .requestMatchers(HttpMethod.GET,  "/products/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasRole("ADMIN")       // 🛡️ Accès réservé aux admins
                         .requestMatchers(HttpMethod.DELETE, "/products/{id}").hasRole("ADMIN")    // 🛡️ Accès réservé aux admins

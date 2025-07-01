@@ -1,23 +1,40 @@
-<h2>📝 Modifier un produit</h2>
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+    <h3 class="text-center mb-4">📝 Modifier un produit</h3>
 
-<form *ngIf="product" (ngSubmit)="updateProduct()">
-  <label>Nom :</label>
-  <input type="text" [(ngModel)]="product.name" name="name" required />
+    <form *ngIf="product" (ngSubmit)="updateProduct()">
+      <div class="mb-3">
+        <label class="form-label">Nom :</label>
+        <input type="text" class="form-control" [(ngModel)]="product.name" name="name" required />
+      </div>
 
-  <label>Prix (€) :</label>
-  <input type="number" [(ngModel)]="product.price" name="price" required />
+      <div class="mb-3">
+        <label class="form-label">Prix (€) :</label>
+        <input type="number" class="form-control" [(ngModel)]="product.price" name="price" required />
+      </div>
 
-  <label>Description :</label>
-  <textarea [(ngModel)]="product.description" name="description"></textarea>
+      <div class="mb-3">
+        <label class="form-label">Description :</label>
+        <textarea class="form-control" rows="2" [(ngModel)]="product.description" name="description"></textarea>
+      </div>
 
-  <label>URL de l'image :</label>
-  <input type="text" [(ngModel)]="product.imageUrl" name="imageUrl" />
+      <div class="mb-3">
+        <label class="form-label">URL de l'image :</label>
+        <input type="text" class="form-control" [(ngModel)]="product.imageUrl" name="imageUrl" />
+      </div>
 
-  <label>Catégorie :</label>
-  <select [(ngModel)]="product.category.id" name="categoryId" required>
-    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
-  </select>
+      <div class="mb-4">
+        <label class="form-label">Catégorie :</label>
+        <select class="form-select" [(ngModel)]="product.category.id" name="categoryId" required>
+          <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
 
-  <br /><br />
-  <button type="submit">💾 Mettre à jour</button>
-</form>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success">
+          💾 Mettre à jour
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
