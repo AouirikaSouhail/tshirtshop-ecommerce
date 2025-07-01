@@ -64,7 +64,7 @@ export class CheckoutComponent implements OnInit {
   });
 }
 
- /**  Ajout pas fonctionnel !!!!!!
+ 
 confirmer(): void {
     this.commandeService.passerCommande(this.items).subscribe({
       next: () => {
@@ -78,17 +78,5 @@ confirmer(): void {
       }
     });
   }
-   */
-
-  confirmer(): void {
-  if (!this.authService.isLoggedIn()) {
-    alert("Vous devez être connecté pour payer !");
-    this.router.navigate(['/login']);
-    return;
-  }
-
-  // ➕ Stripe se lance ici si connecté
-  this.payerAvecStripe();
-}
-
+   
 }

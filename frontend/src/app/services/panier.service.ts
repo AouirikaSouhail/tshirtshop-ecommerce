@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Produit } from './produit.service';
 
 export interface PanierItem {
@@ -6,121 +7,102 @@ export interface PanierItem {
   quantite: number;
 }
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class PanierService {
+
+  /* ------------ État interne ------------ */
   private items: PanierItem[] = [];
 
+  /* Observable qui émet la liste à chaque mise à jour */
+  private itemsChangedSubject = new BehaviorSubject<PanierItem[]>([]);
+  readonly itemsChanged$       = this.itemsChangedSubject.asObservable();
+
   constructor() {
-    this.chargerDepuisLocalStorage();
+    this.loadFromStorage();          // hydrate + première émission
   }
 
+  /* ------------ Getters simples ------------ */
   getItems(): PanierItem[] {
     return this.items;
   }
 
- ajouterProduit(produit: Produit, quantite: number = 1): void {
-  const index = this.items.findIndex(p => p.produit.id === produit.id);
-
-  if (index > -1) {
-    const totalSouhaite = this.items[index].quantite + quantite;
-    const quantiteMax = produit.quantiteStock;
-
-    if (totalSouhaite <= quantiteMax) {
-      this.items[index].quantite = totalSouhaite;
-    } else {
-      alert(`Stock insuffisant. Il ne reste que ${quantiteMax - this.items[index].quantite} unité(s).`);
-      return;
-    }
-  } else {
-    if (quantite <= produit.quantiteStock) {
-      this.items.push({ produit, quantite });
-    } else {
-      alert(`Stock insuffisant. Il ne reste que ${produit.quantiteStock} unité(s).`);
-      return;
-    }
+  getNombreTotalArticles(): number {
+    return this.items.reduce((total, item) => total + item.quantite, 0);
   }
 
-  this.sauvegarderDansLocalStorage();
-}
+  getTotal(): number {
+    return this.items.reduce(
+      (total, item) => total + item.produit.price * item.quantite,
+      0
+    );
+  }
 
+  /* ------------ Mutations ------------ */
+  ajouterProduit(produit: Produit, qte = 1): void {
+    const idx = this.items.findIndex(i => i.produit.id === produit.id);
+
+    if (idx > -1) {
+      const souhaité = this.items[idx].quantite + qte;
+      if (souhaité > produit.quantiteStock) {
+        alert(`Stock insuffisant (max ${produit.quantiteStock}).`);
+        return;
+      }
+      this.items[idx].quantite = souhaité;
+    } else {
+      if (qte > produit.quantiteStock) {
+        alert(`Stock insuffisant (max ${produit.quantiteStock}).`);
+        return;
+      }
+      this.items.push({ produit, quantite: qte });
+    }
+
+    this.persistAndNotify();
+  }
 
   supprimerProduit(id: number): void {
-    this.items = this.items.filter(p => p.produit.id !== id);
-    this.sauvegarderDansLocalStorage();
+    this.items = this.items.filter(i => i.produit.id !== id);
+    this.persistAndNotify();
   }
 
   viderPanier(): void {
     this.items = [];
-    this.sauvegarderDansLocalStorage();
+    this.persistAndNotify();
   }
 
-  getTotal(): number {
-    return this.items.reduce((total, item) => total + item.produit.price * item.quantite, 0);
-  }
-
-  private sauvegarderDansLocalStorage(): void {
-    localStorage.setItem('panier', JSON.stringify(this.items));
-  }
-/** ancien fonctionnel !!!!!
- 
-  private chargerDepuisLocalStorage(): void {
-    const data = localStorage.getItem('panier');
-    if (data) {
-      this.items = JSON.parse(data);
-    }
-  }
-*/
-augmenterQuantite(id: number): void {
-  const item = this.items.find(p => p.produit.id === id);
-  if (item) {
-    if (item.quantite < item.produit.quantiteStock) {
+  augmenterQuantite(id: number): void {
+    const item = this.items.find(i => i.produit.id === id);
+    if (item && item.quantite < item.produit.quantiteStock) {
       item.quantite++;
-      this.sauvegarderDansLocalStorage();
+      this.persistAndNotify();
+    }
+  }
+
+  diminuerQuantite(id: number): void {
+    const item = this.items.find(i => i.produit.id === id);
+    if (!item) { return; }
+
+    if (item.quantite > 1) {
+      item.quantite--;
     } else {
-      alert("❌ Stock maximal atteint !");
+      this.supprimerProduit(id);
+      return;
     }
+    this.persistAndNotify();
   }
-}
 
-
-
-diminuerQuantite(id: number): void {
-  const item = this.items.find(p => p.produit.id === id);
-  if (item && item.quantite > 1) {
-    item.quantite--;
-    this.sauvegarderDansLocalStorage();
-  } else if (item && item.quantite === 1) {
-    this.supprimerProduit(id);
+  /* ------------ Persistance + notification ------------ */
+  private persistAndNotify(): void {
+    localStorage.setItem('panier', JSON.stringify(this.items));
+    this.itemsChangedSubject.next([...this.items]);
   }
-}
 
-// a ajouter fonctionnel !!!!
-getNombreTotalArticles(): number {
-  return this.items.reduce((total, item) => total + item.quantite, 0);
-}
-
-isVide(): boolean {
-  return this.items.length === 0;
-}
-
-aDesProduitsAvecStockInsuffisant(): boolean {
-  return this.items.some(item => item.quantite > item.produit.quantiteStock);
-}
-
-private chargerDepuisLocalStorage(): void {
-  try {
-    const data = localStorage.getItem('panier');
-    if (data) {
-      this.items = JSON.parse(data);
+  private loadFromStorage(): void {
+    try {
+      const data = localStorage.getItem('panier');
+      this.items = data ? JSON.parse(data) : [];
+    } catch {
+      this.items = [];
     }
-  } catch (e) {
-    console.error('Erreur chargement panier depuis localStorage', e);
-    this.items = [];
+    this.itemsChangedSubject.next([...this.items]);
   }
-}
-//ajouter fonctionnel
-
 }

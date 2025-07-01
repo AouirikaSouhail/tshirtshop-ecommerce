@@ -29,6 +29,11 @@ export class ProfileEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+  if (!token) {
+    this.router.navigate(['/login']);
+  }
+  
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.http.get<User>(`http://localhost:8080/api/user/${this.id}`).subscribe({

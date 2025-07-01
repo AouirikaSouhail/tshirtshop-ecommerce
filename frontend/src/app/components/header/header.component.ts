@@ -1,18 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import { PanierService } from '../../services/panier.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  userName: string | null = '';
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  constructor(public router: Router) {}
+  isLoggedIn = false;
+  userName: string | null = null;
+  nbArticles = 0;
+
+  private subs: Subscription[] = [];
+
+  constructor(
+    private router: Router,
+    private panierService: PanierService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
     this.userName = localStorage.getItem('userName');
+    this.nbArticles = this.panierService.getNombreTotalArticles();
+
+    this.subs.push(
+      this.panierService.itemsChanged$.subscribe(() => {
+        this.nbArticles = this.panierService.getNombreTotalArticles();
+      })
+    );
   }
 
   goToProfile(): void {
@@ -23,11 +44,14 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear();
-    this.router.navigate(['/login']);
+    this.panierService.viderPanier();
+    this.authService.logout();
+    this.isLoggedIn = false;
+    this.userName = null;
+    this.nbArticles = 0;
   }
 
-  isLoggedIn(): boolean {
-    return localStorage.getItem('token') !== null;
+  ngOnDestroy(): void {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 }

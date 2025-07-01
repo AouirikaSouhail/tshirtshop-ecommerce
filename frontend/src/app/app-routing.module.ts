@@ -45,7 +45,8 @@ const routes: Routes = [
   { path: 'panier', component: PanierComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'confirmation', component: ConfirmationComponent },
-  {path:'AddProduct', component: AddProductComponent}
+  {path:'AddProduct', component: AddProductComponent},
+  {path:'MesCommandes', component: MesCommandesComponent}
 
 
 
