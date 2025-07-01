@@ -34,11 +34,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.nbArticles = this.panierService.getNombreTotalArticles();
   }
 
-logout(): void {
-  this.authService.logout();            // mise à jour du statut connecté/déconnecté
-  this.panierService.viderPanier();     // vider le panier
-  this.router.navigate(['/login']);     // rediriger vers la page de login
-}
+  logout(): void {
+    this.authService.logout();
+  }
   
     goToProfile(): void {
     const userId = localStorage.getItem('userId');
